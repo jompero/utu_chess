@@ -5,7 +5,12 @@
  */
 package chessgame;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 /**

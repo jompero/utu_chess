@@ -6,8 +6,15 @@
 package chessgame;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -16,9 +23,6 @@ import javafx.stage.Stage;
  */
 public class ChessGame extends Application {
 
-	ChessBoard cb;
-	GameManager gm;
-	
     public static void main(String[] args) {
         Application.launch(args);
     }
@@ -28,8 +32,8 @@ public class ChessGame extends Application {
         primaryStage.setTitle("Shakkipeli");
         
         Group scene = new Group();
-        cb = ChessBoard.getInstance();
-        gm = new GameManager(cb);
+        ChessBoard cb = ChessBoard.getInstance();
+        GameManager gm = new GameManager(cb);
         
         scene.getChildren().add(cb);
         

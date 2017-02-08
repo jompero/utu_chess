@@ -42,7 +42,7 @@ public class King extends Piece {
     @Override
     public ArrayList<String> getMoves(int x, int y) {
         ArrayList<String> moves = new ArrayList<>();
-        return moves;
+        return null;
     }
     
     public boolean isValid() {
