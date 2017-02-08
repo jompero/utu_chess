@@ -16,7 +16,7 @@ public class Pawn extends Piece {
     String spriteWhite = "img/pw.png";
     String spriteBlack = "img/pb.png";
     
-    int[][] moveSet = new int[][] {{1, 0},{2, 0}};
+    int[][] moveSet = new int[][] {{0, 1},{0, 2}};
     
     public Pawn(int player) {
         super(player);

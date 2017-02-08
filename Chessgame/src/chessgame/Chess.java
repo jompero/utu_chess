@@ -20,7 +20,7 @@ public class Chess {
      * @return  the Portable Game Notation of given coordinate
      */
     public static String cbn(int x, int y) {
-        return String.valueOf((char) (y + 'A')) + Integer.toString(x + 1);
+        return String.valueOf((char) (x + 'A')) + Integer.toString(y + 1);
     }
     
     public static String pgnSum(String pgn, int[] offset) {

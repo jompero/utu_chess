@@ -12,16 +12,16 @@ import java.util.ArrayList;
  * @author Dani Jompero
  */
 public class GameManager {
+	
     int round = 0;
-    Chessboard cb;
+    ChessBoard cb;
     
-    public GameManager(Chessboard cb) {
+    public GameManager(ChessBoard cb) {
         this.cb = cb;
         defaultStart();
     }
     
     public void defaultStart() {
-        ArrayList<Piece> pieces = new ArrayList<>();
         String backline= "RNBQKBNR"; 
         
         for (int i = 0; i < backline.length(); i++) {

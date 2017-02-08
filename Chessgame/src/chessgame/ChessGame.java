@@ -32,12 +32,13 @@ public class ChessGame extends Application {
         primaryStage.setTitle("Shakkipeli");
         
         Group scene = new Group();
-        Chessboard cb = new Chessboard();
+        ChessBoard cb = ChessBoard.getInstance();
         GameManager gm = new GameManager(cb);
         
         scene.getChildren().add(cb);
         
-        primaryStage.setScene(new Scene(scene, 560, 560));
+        primaryStage.setScene(new Scene(scene, 550, 550));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }

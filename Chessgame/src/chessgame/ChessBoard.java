@@ -17,15 +17,28 @@ import javafx.scene.layout.GridPane;
  *
  * @author Dani Jompero
  */
-public class Chessboard extends GridPane {
+public class ChessBoard extends GridPane {
 
-    private final ArrayList<Square> board = new ArrayList<>();
+    private static final ArrayList<Square> board = new ArrayList<>();
     
-    public Chessboard() {
+    private static ChessBoard instance;
+    
+    
+    private ChessBoard() {
         createBoard();
         drawBoard();
+        System.out.println(this.toString());
     }
     
+    // Singleton instance of ChessBoard
+    public static ChessBoard getInstance() {
+    	if (instance == null) {
+    		return new ChessBoard();
+    	}
+    	return instance;
+    }
+    
+    // Creates chess board in memory
     private void createBoard() {
         for (int file = 0; file < Chess.BOARDSIZE; file++) {
             for (int rank = 0; rank < Chess.BOARDSIZE; rank++) {
@@ -34,6 +47,11 @@ public class Chessboard extends GridPane {
         }
     }
     
+    public static ArrayList<Square> getBoard() {
+    	return board;
+    }
+    
+    // Draw reference to 'board'
     private void drawBoard() {
         for (Square s : board) {
             this.add(s, s.getRank(), s.getFile());
@@ -42,24 +60,16 @@ public class Chessboard extends GridPane {
     
     @Override
     public String toString() {
-        String temp = "Shakkilauta\n A B C D E F G H";
-        int row = 0;
-        ObservableList<Node> children = this.getChildren();
-        for (int i = 0; i < children.size(); i++) {
-            if (i % Chess.BOARDSIZE == 0 && i != children.size() -1) {
-                temp += "\n" + Integer.toString(i);
-                row++;
-            }
-            //Check s = (Check) children.get(i);
-            /*if (s.getPiece() != null) {
-                temp += "[" + s.getPiece().toString() + "]";
-            } else {*/
-                temp += "[ ]";
-            //}
-        }
-        temp += "\n";
-        for (int i = 0; i < Chess.BOARDSIZE; i++) {
-            temp = temp + "  " + Integer.toString(i + 1);
+        String temp = "";
+        for (Square s : board) {
+        	String piece = "";
+        	if (s.piece != null) {
+        		piece = s.getPiece().toString();
+        	}
+        	temp += "[" + piece + s.toString() + "]";
+        	if ((s.getRank() + 1) % Chess.BOARDSIZE == 0) {
+        		temp += "\n";
+        	}
         }
         return temp;
     }

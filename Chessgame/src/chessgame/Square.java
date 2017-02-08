@@ -5,6 +5,8 @@
  */
 package chessgame;
 
+import java.util.ArrayList;
+
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -21,9 +23,9 @@ public class Square extends StackPane {
     int x;
     int y;
     String cbn;
-    
-    Check check;
+    Check check;	//To render the square
     Piece piece;
+    ArrayList<Square> availableMoves = new ArrayList<Square>();
         
     public Square(int x, int y) {
         this.x = x;
@@ -32,24 +34,65 @@ public class Square extends StackPane {
         check = new Check(x, y);
         this.getChildren().add(check);
         
-        EventHandler eh = new EventHandler<MouseEvent> () {
-            @Override
-            public void handle(MouseEvent e) {
-                if (piece != null) {
-                    Node source = (Node) e.getSource();
-                    Integer colIndex = GridPane.getColumnIndex(source);
-                    Integer rowIndex = GridPane.getRowIndex(source);
-                    System.out.println("This is square " + cbn + " and contains " + getPiece());
-                    System.out.println("Available moves for " + getPiece() + " are: " + getPiece().getMoves(y, x));
-                }
-            }
-        };
-        this.setOnMouseEntered(eh);
+        onMouseEnter();
+        onMouseExit();
+    }
+    
+    // Highlight possible moves on mouse enter.
+    private void onMouseEnter() {
+    	this.setOnMouseEntered(new EventHandler<MouseEvent> () {
+			@Override
+			public void handle(MouseEvent e) {
+				if (piece != null) {
+					for (Square s : availableMoves) {
+						s.highlight();
+					}
+			      	System.out.println("This is square " + cbn + " and contains " + getPiece());
+			      	System.out.println("Available moves for " + getPiece() + " are: " + availableMoves);
+				} else {
+					System.out.println("This is square " + cbn + " and contains no piece.");
+				}
+			}
+    	});
+    }
+    
+    // Disable higlight on mouse exit.
+    private void onMouseExit() {
+    	this.setOnMouseExited(new EventHandler<MouseEvent> () {
+			@Override
+			public void handle(MouseEvent e) {
+				if (piece != null) {
+					for (Square s : availableMoves) {
+						s.highlight();
+					}
+				}
+			}
+    	});
+    }
+    
+    public void highlight() {
+    	check.toggleHighlight();
     }
     
     public void setPiece(Piece piece) {
         this.piece = piece;
         this.getChildren().add(piece);
+        refreshMoves();
+    }
+    
+    public void refreshMoves() {
+    	ArrayList<String> moves = piece.getMoves(x, y);
+    	if (moves != null) {
+			for (String move : moves) {
+				for (Square s : ChessBoard.getBoard()) {
+					if (move.equals(s.toString())) {
+						availableMoves.add(s);
+					}
+				}
+			}
+		} else {
+			availableMoves.clear();
+		}
     }
     
     public Piece getPiece() {
