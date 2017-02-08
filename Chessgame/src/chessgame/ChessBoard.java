@@ -14,7 +14,7 @@ import javafx.scene.layout.GridPane;
  */
 public class ChessBoard extends GridPane {
 
-    private static final ArrayList<Square> board = new ArrayList<>(); // Reference to square on board, call with getBoard from other objects
+    private static final ArrayList<Square> board = new ArrayList<>(); // Reference to squares on board, call with getBoard from other objects
     
     private static ChessBoard instance;
     
