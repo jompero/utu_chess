@@ -16,6 +16,8 @@ public class Knight extends Piece {
     String spriteWhite = "img/jw.png";
     String spriteBlack = "img/jb.png";
     
+    int[][] moveSet = new int[][]{{1, 2},{-1, 2},{2, 1},{-2, 1},{1,-2},{-1,-2},{2,-1},{-2,-1}};
+    
     public Knight(int player) {
         super(player);
         sprite = player == 0 ? new Image(spriteWhite) : new Image(spriteBlack);
@@ -24,7 +26,17 @@ public class Knight extends Piece {
 
     @Override
     public ArrayList<String> getMoves(int x, int y) {
-    	return null;
+        ArrayList<String> moves = new ArrayList<>();
+        if (player == 1) {
+            for (int[] move : moveSet){
+                moves.add(Chess.cbn(x + move[0], y + move[1]));
+            }  
+        } else {
+            for (int[] move : moveSet){
+                moves.add(Chess.cbn(x - move[0], y - move[1]));
+            }
+        }
+        return moves;
     }
     
     @Override
