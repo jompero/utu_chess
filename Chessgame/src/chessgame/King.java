@@ -34,10 +34,6 @@ public class King extends Piece {
         isKing = true;
         drawSprite();
     }
-
-    public void setPosition(Square square) {
-        
-    }
     
     @Override
     public ArrayList<String> getMoves(int x, int y) {
