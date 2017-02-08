@@ -15,6 +15,8 @@ import javafx.scene.layout.GridPane;
 public class ChessBoard extends GridPane {
 
     private static final ArrayList<Square> board = new ArrayList<>(); // Reference to squares on board, call with getBoard from other objects
+    private Piece piece;
+    private Square square;
     
     private static ChessBoard instance;
     
@@ -27,9 +29,34 @@ public class ChessBoard extends GridPane {
     // Singleton instance of ChessBoard
     public static ChessBoard getInstance() {
     	if (instance == null) {
-    		return new ChessBoard();
+    		instance = new ChessBoard();
     	}
     	return instance;
+    }
+    
+    public void storePiece(Piece piece, Square square) {
+    	this.square = square;
+    	this.piece = piece;
+    }
+    
+    public Piece takePiece() {
+    	Piece temp = piece;
+    	piece = null;
+    	square.clearPiece();
+    	unSelectAll();
+    	return temp;
+    }
+    
+    public void unSelectAll() {
+    	for (Square s : board) {
+    		s.unSelect();
+    	}
+    }
+    
+    public void unhighlightAl() {
+    	for (Square s : board) {
+    		s.unHighlight();
+    	}
     }
     
     // Creates chess board in memory

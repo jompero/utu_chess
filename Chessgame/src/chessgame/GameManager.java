@@ -19,6 +19,8 @@ public class GameManager {
         defaultStart();
     }
     
+    
+    
     public void defaultStart() {
         String backline= "RNBQKBNR"; 
         
