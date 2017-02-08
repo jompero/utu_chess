@@ -16,6 +16,8 @@ public class Rook extends Piece {
     String spriteWhite = "img/rw.png";
     String spriteBlack = "img/rb.png";
     
+    int[][] moveSet = new int[][]{{0,9},{9,0}};
+    
     public Rook(int player) {
         super(player);
         sprite = player == 0 ? new Image(spriteWhite) : new Image(spriteBlack);
@@ -24,7 +26,17 @@ public class Rook extends Piece {
 
     @Override
     public ArrayList<String> getMoves(int x, int y) {
-        return null;
+        ArrayList<String> moves = new ArrayList<>();
+        if (player == 1) {
+            for (int[] move : moveSet){
+                moves.add(Chess.cbn(x + move[0], y + move[1]));
+            }  
+        } else {
+            for (int[] move : moveSet){
+                moves.add(Chess.cbn(x - move[0], y - move[1]));
+            }
+        }
+        return moves;
     }
     
     @Override
