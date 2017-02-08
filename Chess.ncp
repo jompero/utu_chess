@@ -1,0 +1,223 @@
+<Project>
+  <Name>Chess</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Chess</Name>
+    <Language>Java</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>Piece</Name>
+        <Access>Public</Access>
+        <Location left="10" top="640" />
+        <Size width="267" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">protected Image sprite</Member>
+        <Member type="Field">protected int player</Member>
+        <Member type="Field">protected boolean isKing</Member>
+        <Member type="Field">protected Square square</Member>
+        <Member type="Method">public void drawSprite()</Member>
+        <Member type="Method">public abstract void getMoves()</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Pawn</Name>
+        <Access>Public</Access>
+        <Location left="306" top="570" />
+        <Size width="205" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">String spriteWhite = "img/pw.png"</Member>
+        <Member type="Field">String spriteBlack = "img/pb.png"</Member>
+        <Member type="Constructor">public Pawn(int player)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Rook</Name>
+        <Access>Public</Access>
+        <Location left="756" top="570" />
+        <Size width="200" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">String spriteWhite = "img/rw.png"</Member>
+        <Member type="Field">String spriteBlack = "img/rb.png"</Member>
+        <Member type="Constructor">public Rook(int player)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Knight</Name>
+        <Access>Public</Access>
+        <Location left="306" top="830" />
+        <Size width="205" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">String spriteWhite = "img/jw.png"</Member>
+        <Member type="Field">String spriteBlack = "img/jb.png"</Member>
+        <Member type="Constructor">public Knight(int player)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Bishop</Name>
+        <Access>Public</Access>
+        <Location left="531" top="830" />
+        <Size width="206" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">String spriteWhite = "img/bw.png"</Member>
+        <Member type="Field">String spriteBlack = "img/bb.png"</Member>
+        <Member type="Constructor">public Bishop(int player)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Queen</Name>
+        <Access>Public</Access>
+        <Location left="531" top="570" />
+        <Size width="206" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">String spriteWhite = "img/qw.png"</Member>
+        <Member type="Field">String spriteBlack = "img/qb.png"</Member>
+        <Member type="Constructor">public Queen(int player)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>King</Name>
+        <Access>Public</Access>
+        <Location left="756" top="830" />
+        <Size width="200" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">String spriteWhite = "img/kw.png"</Member>
+        <Member type="Field">String spriteBlack = "img/kb.png"</Member>
+        <Member type="Constructor">public King(int player)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Chessboard</Name>
+        <Access>Public</Access>
+        <Location left="10" top="282" />
+        <Size width="263" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private final ArrayList&lt;Check&gt; board = new ArrayList&lt;&gt;()</Member>
+        <Member type="Field">private final Color chessBoardLight = Color.lightGray</Member>
+        <Member type="Field">private final Color chessBoardDark = Color.darkGray</Member>
+        <Member type="Constructor">public Chessboard()</Member>
+        <Member type="Method">private void createBoard()</Member>
+        <Member type="Method">public void drawBoard()</Member>
+        <Member type="Method">public String toString()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>GameManager</Name>
+        <Access>Public</Access>
+        <Location left="201" top="10" />
+        <Size width="188" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">Chessboard cb</Member>
+        <Member type="Field">private int round</Member>
+        <Member type="Constructor">public GameManager()</Member>
+        <Member type="Method">public boolean winConditionMet()</Member>
+        <Member type="Method">public void defaultStart()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Player</Name>
+        <Access>Public</Access>
+        <Location left="569" top="10" />
+        <Size width="162" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private String name</Member>
+        <Member type="Field">private ArrayList&lt;Piece&gt; pieces</Member>
+        <Member type="Method">private void findPawns()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>SaveData</Name>
+        <Access>Public</Access>
+        <Location left="306" top="282" />
+        <Size width="201" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Player[] players</Member>
+        <Member type="Field">private String pgn</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ChessGame</Name>
+        <Access>Public</Access>
+        <Location left="10" top="10" />
+        <Size width="179" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public static void main(String[] args)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Square</Name>
+        <Access>Public</Access>
+        <Location left="531" top="282" />
+        <Size width="200" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">int x</Member>
+        <Member type="Field">int y</Member>
+        <Member type="Field">String cbn</Member>
+        <Member type="Field">Piece piece</Member>
+        <Member type="Constructor">public Square(int x, int y)</Member>
+        <Member type="Method">public void setPiece(Piece piece)</Member>
+        <Member type="Method">public Piece getPiece()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Chess</Name>
+        <Access>Public</Access>
+        <Location left="397" top="10" />
+        <Size width="162" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public static final int BOARDSIZE = 8</Member>
+        <Member type="Field">public static int SQUARESIZE = 70</Member>
+        <Member type="Method">public static String cbn(int x, int y)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Association" first="0" second="5">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="2">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="1">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="4">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="6">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
