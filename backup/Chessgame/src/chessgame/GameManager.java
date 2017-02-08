@@ -5,6 +5,8 @@
  */
 package chessgame;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Dani Jompero

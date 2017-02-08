@@ -5,11 +5,17 @@
  */
 package chessgame;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Dani Jompero
  */
-public class SaveData {
-    Player[] players;
-    String pgn;
+class Player {
+    private String name;
+    private ArrayList<Piece> pieces;
+    
+    private void findPawns() {
+        
+    }
 }

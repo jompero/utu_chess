@@ -12,46 +12,36 @@ import javafx.scene.image.Image;
  *
  * @author Dani Jompero
  */
-public class King extends Piece {
-    String spriteWhite = "img/kw.png";
-    String spriteBlack = "img/kb.png";
+public class Pawn extends Piece {
+    String spriteWhite = "img/pw.png";
+    String spriteBlack = "img/pb.png";
     
-    // Offset of all possible moves
-    int[][] moveSet = {
-        {1,-1},
-        {1,0},
-        {1,1},
-        {0,-1},
-        {0,1},
-        {-1,-1},
-        {-1,0},
-        {-1,1}
-    };
+    int[][] moveSet = new int[][] {{0, 1},{0, 2}};
     
-    public King(int player) {
+    public Pawn(int player) {
         super(player);
         sprite = player == 0 ? new Image(spriteWhite) : new Image(spriteBlack);
-        isKing = true;
         drawSprite();
-    }
-
-    public void setPosition(Square square) {
-        
     }
     
     @Override
     public ArrayList<String> getMoves(int x, int y) {
         ArrayList<String> moves = new ArrayList<>();
+        if (player == 1) {
+            for (int[] move : moveSet){
+                moves.add(Chess.cbn(x + move[0], y + move[1]));
+            }  
+        } else {
+            for (int[] move : moveSet){
+                moves.add(Chess.cbn(x - move[0], y - move[1]));
+            }
+        }
         return moves;
-    }
-    
-    public boolean isValid() {
-        return false;
     }
     
     @Override
     public String toString() {
-        return player == 0 ? "K" : "k";
+        return player == 0 ? "P" : "p";
     }
     
 }

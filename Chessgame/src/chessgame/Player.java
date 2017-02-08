@@ -5,17 +5,18 @@
  */
 package chessgame;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Dani Jompero
  */
 class Player {
     private String name;
-    private ArrayList<Piece> pieces;
     
-    private void findPawns() {
-        
+    public Player(int player) {
+    	name = player == 0 ? "Player 1" : "Player 2";
+    }
+    
+    public String getName() {
+    	return name;
     }
 }

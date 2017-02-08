@@ -5,6 +5,8 @@
  */
 package chessgame;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Dani Jompero

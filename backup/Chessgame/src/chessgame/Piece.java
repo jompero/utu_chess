@@ -10,6 +10,7 @@ package chessgame;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
 
 /**
  *
