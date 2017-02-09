@@ -19,44 +19,30 @@ class Check extends Rectangle {
     private final Color light = Color.LIGHTGRAY;
     private final Color highlight = Color.YELLOW;
     private final Color select = Color.WHITE;
-    private boolean highlighted = false;
-    private boolean selected = false;
     
     public Check(int x, int y) {
         super(Chess.SQUARESIZE, Chess.SQUARESIZE);
         
         paint = ((x + y) % 2) == 0 ? dark : light;
         this.setFill(paint);
+        this.setStroke(select);
         this.setStrokeType(StrokeType.INSIDE);
         this.setStrokeWidth(0);
     }
     
     public void unHighlight() {
-    	highlighted = false;
-    	this.setStroke(select);
-    	toggleStroke();
+    	this.setFill(paint);
     }
     
     public void highlight() {
-    	highlighted = true;
-    	this.setStroke(highlight);
-    	toggleStroke();
+    	this.setFill(highlight);
     }
     
     public void unSelect() {
-    	selected = false;
-    	toggleStroke();
+    	this.setStrokeWidth(0);
     }
     
     public void select() {
-    	ChessBoard.getInstance().unSelectAll();
-    	selected = !selected;
-    	this.setStroke(select);
-    	toggleStroke();
+    	this.setStrokeWidth(3);
     }
-    
-    private void toggleStroke() {
-    	this.setStrokeWidth(highlighted || selected ? 2 : 0);
-    }
-
 }

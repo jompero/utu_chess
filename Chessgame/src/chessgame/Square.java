@@ -26,6 +26,8 @@ public class Square extends StackPane {
     ArrayList<Square> availableMoves = new ArrayList<Square>();
         
     public Square(int x, int y) {
+    	ChessBoard cb = ChessBoard.getInstance();
+    	
         this.x = x;
         this.y = y;
         this.cbn = Chess.cbn(x, y);
@@ -36,19 +38,17 @@ public class Square extends StackPane {
         onMouseExit();
     }
     
-
-    
     // Click to select a square. Method makes sure to disable other selections.
     private void onMouseClick(boolean enabled) {
     	EventHandler<MouseEvent> eh = new EventHandler<MouseEvent> () {
 			@Override
 			public void handle(MouseEvent e) {
-				if (!highlighted && piece != null) {
-					check.select();
-					selectPiece();
-					selected = true;
-				} else if (highlighted) {
-					setPiece(ChessBoard.getInstance().takePiece());
+				if (piece != null && piece.getPlayer() == 0) {
+					storePiece();
+					select();
+				} 
+				else {
+					movePiece();
 				}
 			}
     	};
@@ -85,30 +85,39 @@ public class Square extends StackPane {
     	});
     }
     
-    private void selectPiece() {
+    private void storePiece() {
     	if (piece != null) {
     		ChessBoard.getInstance().storePiece(piece, this);
     	}
     }
     
+    private void movePiece() {
+    	this.getChildren().removeAll();
+    }
+    
     public void highlight() {
     	highlighted = !highlighted;
     	check.highlight();
-    	onMouseClick(true);
+    	if (piece == null)
+    		onMouseClick(true);
     }
     
     public void unHighlight() {
     	highlighted = !highlighted;
     	check.unHighlight();
-    	if (piece == null) {
+    	if (piece == null)
         	onMouseClick(false);
-    	}
     }
     
     private void highlightAvailableMoves() {
 		for (Square s : availableMoves) {
 			s.highlight();
 		}
+    }
+    
+    public void select() {
+    	selected = true;
+    	check.select();
     }
     
     public void unSelect() {
