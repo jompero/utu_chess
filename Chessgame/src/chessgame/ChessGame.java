@@ -29,12 +29,12 @@ public class ChessGame extends Application {
         
         Group scene = new Group();
         cb = ChessBoard.getInstance();
-        gm = new GameManager(cb);
         
         scene.getChildren().add(cb);
         
         primaryStage.setScene(new Scene(scene, 550, 550));
         primaryStage.setResizable(false);
         primaryStage.show();
+        gm = GameManager.getInstance();
     }
 }

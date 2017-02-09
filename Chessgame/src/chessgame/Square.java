@@ -30,8 +30,23 @@ public class Square extends StackPane {
         check = new Check(x, y);
         this.getChildren().add(check);
         
-        onMouseEnter();
-        onMouseExit();
+        onClick();
+        //onMouseEnter();
+        //onMouseExit();
+    }
+    
+    // Prepare or swap piece on click.
+    private void onClick() {
+    	this.setOnMousePressed(new EventHandler<MouseEvent> () {
+			@Override
+			public void handle(MouseEvent e) {
+				handleClick();
+			}
+    	});
+    }
+    
+    private void handleClick() {
+    	GameManager.getInstance().clickQueue(this);
     }
     
     // Highlight possible moves on mouse enter.
@@ -52,7 +67,7 @@ public class Square extends StackPane {
     	});
     }
     
-    // Disable higlight on mouse exit.
+    // Disable highlight on mouse exit.
     private void onMouseExit() {
     	this.setOnMouseExited(new EventHandler<MouseEvent> () {
 			@Override
@@ -74,6 +89,13 @@ public class Square extends StackPane {
         this.piece = piece;
         this.getChildren().add(piece);
         refreshMoves();
+    }
+    
+    public void clearPiece() {
+    	piece = null;
+    	this.getChildren().clear();
+    	this.getChildren().add(check);
+    	refreshMoves();
     }
     
     public void refreshMoves() {
