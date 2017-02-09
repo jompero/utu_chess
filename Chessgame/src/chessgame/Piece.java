@@ -25,6 +25,10 @@ abstract class Piece extends ImageView {
         this.player = player;
     }
     
+    public int getPlayer() {
+    	return player;
+    }
+    
     public void drawSprite() {
         super.setFitHeight(Chess.SQUARESIZE);
         super.setFitWidth(Chess.SQUARESIZE);

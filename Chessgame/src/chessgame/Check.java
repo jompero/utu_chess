@@ -5,6 +5,7 @@
  */
 package chessgame;
 
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
@@ -14,11 +15,13 @@ import javafx.scene.shape.StrokeType;
  * @author Dani Jompero
  */
 class Check extends Rectangle {
-    private final Color paint;
-    private final Color dark = Color.DARKGRAY;
-    private final Color light = Color.LIGHTGRAY;
-    private final Color highlight = Color.YELLOW;
-    private boolean highlighted = false;
+    final Color paint;
+    final Color dark = Color.DARKGRAY;
+    final Color light = Color.LIGHTGRAY;
+    final Color highlight = Color.YELLOW;
+    final int strokeWeight = 2;
+    InnerShadow shadow = new InnerShadow(4, 2, 2, Color.BLACK);
+    
     
     public Check(int x, int y) {
         super(Chess.SQUARESIZE, Chess.SQUARESIZE);
@@ -30,9 +33,12 @@ class Check extends Rectangle {
         this.setStroke(highlight);
     }
     
-    public void toggleHighlight() {
-    	highlighted = !highlighted;
-    	this.setStrokeWidth(highlighted ? 2 : 0);
+    public void highlightFX(boolean isOn) {
+    	this.setStrokeWidth(isOn ? strokeWeight : 0);
+    }
+    
+    public void selectFX(boolean isOn) {
+    	this.setEffect(shadow);
     }
 
 }

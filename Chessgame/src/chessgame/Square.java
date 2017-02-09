@@ -19,9 +19,14 @@ public class Square extends StackPane {
     int x;
     int y;
     String cbn;
-    Check check;	//To render the square
-    Piece piece;
     ArrayList<Square> availableMoves = new ArrayList<Square>();
+    
+    // Visual components
+    Check check;
+    Piece piece;
+    
+    private boolean highlighted;
+	private boolean selected;
         
     public Square(int x, int y) {
         this.x = x;
@@ -31,8 +36,8 @@ public class Square extends StackPane {
         this.getChildren().add(check);
         
         onClick();
-        //onMouseEnter();
-        //onMouseExit();
+        onMouseEnter();
+        onMouseExit();
     }
     
     // Prepare or swap piece on click.
@@ -54,15 +59,7 @@ public class Square extends StackPane {
     	this.setOnMouseEntered(new EventHandler<MouseEvent> () {
 			@Override
 			public void handle(MouseEvent e) {
-				if (piece != null) {
-					for (Square s : availableMoves) {
-						s.highlight();
-					}
-			      	System.out.println("This is square " + cbn + " and contains " + getPiece());
-			      	System.out.println("Available moves for " + getPiece() + " are: " + availableMoves);
-				} else {
-					System.out.println("This is square " + cbn + " and contains no piece.");
-				}
+				highlightMoves();
 			}
     	});
     }
@@ -72,32 +69,29 @@ public class Square extends StackPane {
     	this.setOnMouseExited(new EventHandler<MouseEvent> () {
 			@Override
 			public void handle(MouseEvent e) {
-				if (piece != null) {
-					for (Square s : availableMoves) {
-						s.highlight();
-					}
-				}
+				highlightMoves();
 			}
     	});
     }
     
+    public void highlightMoves() {
+    	if (piece != null) {
+			for (Square s : availableMoves) {
+				s.highlight();
+			}
+		}
+    }
+    
     public void highlight() {
-    	check.toggleHighlight();
+    	highlighted = !highlighted;
+    	check.highlightFX(highlighted);
     }
     
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-        this.getChildren().add(piece);
-        refreshMoves();
+    public void select() {
+    	selected = !selected;
+    	check.selectFX(selected);
     }
-    
-    public void clearPiece() {
-    	piece = null;
-    	this.getChildren().clear();
-    	this.getChildren().add(check);
-    	refreshMoves();
-    }
-    
+
     public void refreshMoves() {
     	ArrayList<String> moves = piece.getMoves(x, y);
     	if (moves != null) {
@@ -113,8 +107,20 @@ public class Square extends StackPane {
 		}
     }
     
+    public ArrayList<Square> getAvailableMoves() {
+    	return availableMoves;
+    }
+    
     public Piece getPiece() {
         return piece;
+    }
+    
+    public void setPiece(Piece piece) {
+        if (this.getChildren().size() > 1)
+        	this.getChildren().remove(1);
+        this.piece = piece;
+        this.getChildren().add(piece);
+        refreshMoves();
     }
     
     public int getRank() {
@@ -126,7 +132,17 @@ public class Square extends StackPane {
     }
     
     @Override
+    public boolean equals(Object o) {
+		if (o.toString().equals(this.toString()))
+			return true;
+    	return false;
+    }
+    
+    @Override
     public String toString() {
-        return cbn;
+    	String temp = "";
+    	if (piece != null) { temp = this.piece.toString(); }
+    	temp += cbn;
+        return temp;
     }
 }

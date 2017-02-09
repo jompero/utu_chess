@@ -13,8 +13,9 @@ import java.util.ArrayList;
  */
 public class GameManager {
 	
-    int round = 0;
+    static int round = 0;
     Square s;
+    ArrayList<Square> validMoves;
     
     static GameManager instance;
     
@@ -29,19 +30,48 @@ public class GameManager {
     	return instance;
     }
     
-    public void clickQueue(Square s) {
-    	if (this.s != null) {
-        	if (this.s.getPiece() != null) {
-        		swapContent(this.s, s);
-        		return;
-        	}
-    	}
-    	this.s = s;
+    private void nextRound() {
+    	round++;
+    	s = null;
+    	validMoves.clear();
     }
     
-    public void swapContent(Square from, Square to) {
+    public static int getTurn() {
+    	return round % 2;
+    }
+    
+    public void clickQueue(Square s) {
+    	if (this.s != null) {			// If a square has already been selected
+    		if(isValidMove(s)) {		// If the square is in within valid moves
+    			movePiece(this.s, s);	// Move piece and proceed with game logic
+    			nextRound();
+    			return;
+    		}
+    		this.s.select();
+    	}
+    	// Otherwise set square to be currently selected
+    	this.s = s;
+    	s.select();
+    	if (s.getPiece() != null) {
+    		validMoves = s.getAvailableMoves();
+    	} else {
+    		validMoves.clear();
+    	}
+    }
+    
+    private boolean isValidMove(Square s) {
+    	for (Square move : validMoves) {
+    		if (move.equals(s)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    public void movePiece(Square from, Square to) {
+    	System.out.println("[" + from.toString() + " " + to.toString() + "]");
     	to.setPiece(from.getPiece());
-    	from.clearPiece();
+    	to.highlightMoves();
     }
     
     public void defaultStart() {
