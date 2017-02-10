@@ -29,6 +29,7 @@ public class ChessGame extends Application {
         
         Group scene = new Group();
         cb = ChessBoard.getInstance();
+        System.out.println(cb);
         
         scene.getChildren().add(cb);
         

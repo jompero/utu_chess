@@ -5,6 +5,7 @@
  */
 package chessgame;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 
@@ -36,8 +37,8 @@ public class King extends Piece {
     }
     
     @Override
-    public ArrayList<String> getMoves(int x, int y) {
-        ArrayList<String> moves = new ArrayList<>();
+    public ArrayList<Point> getMoves(int x, int y) {
+        ArrayList<Point> moves = new ArrayList<>();
         return moves;
     }
     

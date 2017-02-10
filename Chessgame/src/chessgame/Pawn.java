@@ -5,6 +5,7 @@
  */
 package chessgame;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 
@@ -28,31 +29,31 @@ public class Pawn extends Piece {
     }
     
     @Override
-    public ArrayList<String> getMoves(int x, int y) {
-        ArrayList<String> moves = new ArrayList<>();
+    public ArrayList<Point> getMoves(int x, int y) {
+        ArrayList<Point> moves = new ArrayList<>();
         if (player == 1) {
         	if(hasMoved==false){
             	for (int[] move : moveSet){
-            		moves.add(Chess.cbn(x + move[0], y + move[1]));
+            		moves.add(new Point(x + move[0], y + move[1]));
             		hasMoved=true;
             	}
             }
         	else{
         			for (int[] move : moveSet2){
-            		moves.add(Chess.cbn(x + move[0], y + move[1]));	
+            		moves.add(new Point(x + move[0], y + move[1]));	
         		}
         	}
         	
         } else {
         	if(hasMoved==false){
             	for (int[] move : moveSet){
-            		moves.add(Chess.cbn(x - move[0], y - move[1]));
+            		moves.add(new Point(x - move[0], y - move[1]));
             		hasMoved=true;
             	}
             }
         	else{
         			for (int[] move : moveSet2){
-            		moves.add(Chess.cbn(x - move[0], y - move[1]));	
+            		moves.add(new Point(x - move[0], y - move[1]));	
         		}
         	}
         }

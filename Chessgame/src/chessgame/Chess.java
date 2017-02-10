@@ -5,6 +5,8 @@
  */
 package chessgame;
 
+import java.awt.Point;
+
 /**
  *
  * @author Dani Jompero
@@ -19,13 +21,7 @@ public class Chess {
      * @param y 'y' location of given coordinate
      * @return  the Portable Game Notation of given coordinate
      */
-    public static String cbn(int x, int y) {
-        return String.valueOf((char) (x + 'A')) + Integer.toString(y + 1);
-    }
-    
-    public static String pgnSum(String pgn, int[] offset) {
-        char file = (char) (pgn.charAt(0) + (char) offset[1]);
-        int rank = (int) Integer.valueOf(pgn.charAt(1)) + offset[0];
-        return Character.toString(file) + rank;
+    public static String cbn(Point p) {
+        return String.valueOf((char) (p.getX() + 'A')) + Integer.toString((int) p.getY() + 1);
     }
 }

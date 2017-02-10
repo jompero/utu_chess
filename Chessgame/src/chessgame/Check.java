@@ -5,6 +5,8 @@
  */
 package chessgame;
 
+import java.awt.Point;
+
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -24,10 +26,10 @@ class Check extends Rectangle {
     InnerShadow noShadow = new InnerShadow(0, 0, 0, Color.BLACK);
     
     
-    public Check(int x, int y) {
+    public Check(Point p) {
         super(Chess.SQUARESIZE, Chess.SQUARESIZE);
         
-        paint = ((x + y) % 2) == 0 ? dark : light;
+        paint = ((p.getX() + p.getY()) % 2) == 0 ? dark : light;
         this.setFill(paint);
         this.setStrokeType(StrokeType.INSIDE);
         this.setStrokeWidth(0);

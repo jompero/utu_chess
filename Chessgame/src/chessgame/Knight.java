@@ -5,6 +5,7 @@
  */
 package chessgame;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 
@@ -16,7 +17,7 @@ public class Knight extends Piece {
     String spriteWhite = "img/jw.png";
     String spriteBlack = "img/jb.png";
     
-    int[][] moveSet = new int[][]{{1, 2},{-1, 2},{2, 1},{-2, 1},{1,-2},{-1,-2},{2,-1},{-2,-1}};
+    int[][] moveSet = new int[][] {{1, 2}, {-1, 2}, {2, 1}, {-2, 1}, {1,-2}, {-1,-2}, {2,-1}, {-2,-1}};
     
     public Knight(int player) {
         super(player);
@@ -25,15 +26,15 @@ public class Knight extends Piece {
     }
 
     @Override
-    public ArrayList<String> getMoves(int x, int y) {
-        ArrayList<String> moves = new ArrayList<>();
+    public ArrayList<Point> getMoves(int x, int y) {
+        ArrayList<Point> moves = new ArrayList<>();
         if (player == 1) {
             for (int[] move : moveSet){
-                moves.add(Chess.cbn(x + move[0], y + move[1]));
+                moves.add(new Point(x + move[0], y + move[1]));
             }  
         } else {
             for (int[] move : moveSet){
-                moves.add(Chess.cbn(x - move[0], y - move[1]));
+                moves.add(new Point(x - move[0], y - move[1]));
             }
         }
         return moves;

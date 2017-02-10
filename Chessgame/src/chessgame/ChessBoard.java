@@ -47,7 +47,7 @@ public class ChessBoard extends GridPane {
     
     private void drawBoard() {
         for (Square s : board) {
-            this.add(s, s.getRank(), s.getFile());
+            this.add(s, (int) s.getPoint().getX(), (int) s.getPoint().getY());
         }
     }
     
@@ -60,7 +60,7 @@ public class ChessBoard extends GridPane {
         		piece = s.getPiece().toString();
         	}
         	temp += "[" + piece + s.toString() + "]";
-        	if ((s.getRank() + 1) % Chess.BOARDSIZE == 0) {
+        	if ((s.getPoint().getX() + 1) % Chess.BOARDSIZE == 0) {
         		temp += "\n";
         	}
         }

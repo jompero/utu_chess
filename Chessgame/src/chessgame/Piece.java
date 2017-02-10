@@ -7,6 +7,7 @@ package chessgame;
 
 
 
+import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,5 +36,5 @@ abstract class Piece extends ImageView {
         this.setImage(sprite);
     }
     
-    public abstract ArrayList<String> getMoves(int x, int y);
+    public abstract ArrayList<Point> getMoves(int x, int y);
 }

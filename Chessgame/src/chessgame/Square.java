@@ -5,6 +5,7 @@
  */
 package chessgame;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import javafx.event.EventHandler;
@@ -16,8 +17,7 @@ import javafx.scene.layout.StackPane;
  * @author Dani Jompero
  */
 public class Square extends StackPane {
-    int x;
-    int y;
+    Point point;
     String cbn;
     ArrayList<Square> availableMoves = new ArrayList<Square>();
     
@@ -29,10 +29,9 @@ public class Square extends StackPane {
 	private boolean selected;
         
     public Square(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.cbn = Chess.cbn(x, y);
-        check = new Check(x, y);
+        this.point = new Point(x, y);
+        this.cbn = Chess.cbn(point);
+        check = new Check(point);
         this.getChildren().add(check);
         
         onClick();
@@ -94,20 +93,26 @@ public class Square extends StackPane {
 
     public void refreshMoves() {
     	availableMoves.clear();
-    	ArrayList<String> moves = piece.getMoves(x, y);
+    	ArrayList<Point> moves = piece.getMoves((int) point.getX(), (int) point.getY());
+    	System.out.println(piece.toString() + " getMoves() " + moves);
     	if (moves != null) {
-			for (String move : moves) {
+			for (Point move : moves) {
 				for (Square s : ChessBoard.getBoard()) {
-					if (move.equals(s.toString())) {
+					if (move.equals(s.getPoint())) {
 						availableMoves.add(s);
 					}
 				}
 			}
 		}
+    	System.out.println(cbn + " availableMoves " + availableMoves);
     }
     
     public ArrayList<Square> getAvailableMoves() {
     	return availableMoves;
+    }
+    
+    public Point getPoint() {
+    	return point;
     }
     
     public Piece getPiece() {
@@ -120,14 +125,6 @@ public class Square extends StackPane {
         this.piece = piece;
         this.getChildren().add(piece);
         refreshMoves();
-    }
-    
-    public int getRank() {
-        return x;
-    }
-    
-    public int getFile() {
-        return y;
     }
     
     @Override
