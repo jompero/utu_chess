@@ -16,7 +16,10 @@ public class Pawn extends Piece {
     String spriteWhite = "img/pw.png";
     String spriteBlack = "img/pb.png";
     
+    boolean hasMoved = false;
+    
     int[][] moveSet = new int[][] {{0, 1},{0, 2}};
+    int[][] moveSet2 = new int[][] {{0, 1}};
     
     public Pawn(int player) {
         super(player);
@@ -28,13 +31,30 @@ public class Pawn extends Piece {
     public ArrayList<String> getMoves(int x, int y) {
         ArrayList<String> moves = new ArrayList<>();
         if (player == 1) {
-            for (int[] move : moveSet){
-                moves.add(Chess.cbn(x + move[0], y + move[1]));
-            }  
-        } else {
-            for (int[] move : moveSet){
-                moves.add(Chess.cbn(x - move[0], y - move[1]));
+        	if(hasMoved==false){
+            	for (int[] move : moveSet){
+            		moves.add(Chess.cbn(x + move[0], y + move[1]));
+            		hasMoved=true;
+            	}
             }
+        	else{
+        			for (int[] move : moveSet2){
+            		moves.add(Chess.cbn(x + move[0], y + move[1]));	
+        		}
+        	}
+        	
+        } else {
+        	if(hasMoved==false){
+            	for (int[] move : moveSet){
+            		moves.add(Chess.cbn(x - move[0], y - move[1]));
+            		hasMoved=true;
+            	}
+            }
+        	else{
+        			for (int[] move : moveSet2){
+            		moves.add(Chess.cbn(x - move[0], y - move[1]));	
+        		}
+        	}
         }
         return moves;
     }
