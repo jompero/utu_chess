@@ -23,39 +23,56 @@ public class GameManager {
     }
     
     private void nextRound() {
-    	round++;
     	s = null;
     	validMoves.clear();
-    	System.out.println(round + 1);
+    	
+    	round++;
+    	RoundCounter.getInstance().refresh();
     }
     
     public static int getTurn() {
     	return round % 2;
     }
     
+    public static int getRound() {
+    	return round + 1;
+    }
+    
     public void clickQueue(Square s) {
-    	if (this.s != null) {			// If a square has already been selected
-    		if(isValidMove(s)) {		// If the square is in within valid moves
-    			movePiece(this.s, s);	// Move piece and proceed with game logic
+    	if (this.s != null) {										// If a square has already been selected
+    		if(isValidMove(s)) {									// If the square is in within valid moves
+    			movePiece(this.s, s);								// Move piece and proceed with game logic
     			nextRound();
     			return;
     		}
-    		this.s.select();
+    		if (s.getPiece() != null) {
+    			this.s.select();
+    		}
     	}
-    	// Otherwise set square to be currently selected
-    	this.s = s;
-    	s.select();
     	if (s.getPiece() != null) {
-    		validMoves = s.getAvailableMoves();
-    	} else {
-    		validMoves.clear();
+    		if (s.getPiece().getPlayer() == getTurn()) {
+            	// Otherwise set square to be currently selected
+            	this.s = s;
+            	s.select();
+            	if (s.getPiece() != null) {
+            		validMoves = s.getAvailableMoves();
+            	} else {
+            		validMoves.clear();
+            	}
+    		}
     	}
     }
     
     private boolean isValidMove(Square s) {
     	for (Square move : validMoves) {
-    		if (move.equals(s)) {
-    			return true;
+    		if (move == s) {
+    			if (s.getPiece() != null) {
+    				if (s.getPiece().getPlayer() != getTurn()) {
+    					return true;
+    				}
+    			} else {
+    				return true;
+    			}
     		}
     	}
     	return false;
@@ -69,6 +86,11 @@ public class GameManager {
     }
     
     public void defaultStart() {
+    	round = 0;
+    	RoundCounter.getInstance().refresh();
+    	s = null;
+    	
+    	
         String backline= "RNBQKBNR"; 
         
         ArrayList<Square> s = ChessBoard.getBoard();

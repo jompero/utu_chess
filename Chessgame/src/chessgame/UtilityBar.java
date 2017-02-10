@@ -12,7 +12,7 @@ public class UtilityBar extends ToolBar {
 		this.getItems().add(new SaveButton());
 		this.getItems().add(new Button("Load"));
 		this.getItems().add(new Button("Save"));
-		this.getItems().add(new Label("Round"));
+		this.getItems().add(RoundCounter.getInstance());
 	}
 	
 }
@@ -27,5 +27,25 @@ class SaveButton extends Button {
 		        GameManager.getInstance().defaultStart();
 		    }
 		});
+	}
+}
+
+class RoundCounter extends Label {
+	
+	private static RoundCounter controller;
+	
+	private RoundCounter() {
+		this.setText("Round: 1");
+	}
+	
+	public static RoundCounter getInstance() {
+		if (RoundCounter.controller == null) {
+			controller = new RoundCounter();
+		}
+		return controller;
+	}
+	
+	public void refresh() {
+		setText("Round: " + GameManager.getRound());
 	}
 }
