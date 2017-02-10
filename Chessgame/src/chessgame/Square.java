@@ -26,8 +26,8 @@ public class Square extends StackPane {
         this.getChildren().add(check);
         
         onClick();
-        onMouseEnter();
-        onMouseExit();
+        //onMouseEnter();
+        //onMouseExit();
     }
     
     private void refreshMoves() {
@@ -59,6 +59,7 @@ public class Square extends StackPane {
 			}
     	});
     }
+    
     
     // Highlight possible moves on mouse enter.
     private void onMouseEnter() {

@@ -38,10 +38,12 @@ public class GameManager {
     	return round + 1;
     }
     
+    // Places a square with a piece in queue or moves the piece from previously selected square to newly selected (if a valid move)
     public void clickQueue(Square s) {
     	if (this.s != null) {										// If a square has already been selected
     		if(isValidMove(s)) {									// If the square is in within valid moves
     			movePiece(this.s, s);								// Move piece and proceed with game logic
+    			this.s.highlightMoves();
     			nextRound();
     			return;
     		}
@@ -49,10 +51,10 @@ public class GameManager {
     			this.s.select();
     		}
     	}
-    	if (s.getPiece() != null) {
-    		if (s.getPiece().getPlayer() == getTurn()) {
-            	// Otherwise set square to be currently selected
-            	this.s = s;
+    	if (s.getPiece() != null) {									// Select the square if there is a piece		
+    		if (s.getPiece().getPlayer() == getTurn()) {			// And the piece belongs to the player
+    			this.s = s;
+            	this.s.highlightMoves();
             	s.select();
             	if (s.getPiece() != null) {
             		validMoves = s.getAvailableMoves();
@@ -82,7 +84,6 @@ public class GameManager {
     	System.out.println("[" + from.toString() + " " + to.toString() + "]");
     	to.setPiece(from.getPiece());
     	from.select();
-    	to.highlightMoves(); // To counter the side effect in the Square mouseEnter and mouseExited handling
     }
     
     public void defaultStart() {
