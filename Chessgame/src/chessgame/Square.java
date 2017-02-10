@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chessgame;
 
 import java.awt.Point;
@@ -12,10 +7,6 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
-/**
- *
- * @author Dani Jompero
- */
 public class Square extends StackPane {
     Point point;
     String cbn;
@@ -39,23 +30,39 @@ public class Square extends StackPane {
         onMouseExit();
     }
     
+    private void refreshMoves() {
+    	availableMoves.clear();
+    	ArrayList<Point> moves = piece.getMoves((int) point.getX(), (int) point.getY());
+    	if (moves != null) {
+			for (Point move : moves) {
+				for (Square s : ChessBoard.getBoard()) {
+					if (move.equals(s.getPoint())) {
+						availableMoves.add(s);
+					}
+				}
+			}
+		}
+    }
+    
+    public void clear() {
+        if (this.getChildren().size() > 1)
+        	this.getChildren().remove(1);
+    }
+    
+    // MOUSE EVENT HANDLING
     // Prepare or swap piece on click.
     private void onClick() {
-    	this.setOnMousePressed(new EventHandler<MouseEvent> () {
+    	setOnMousePressed(new EventHandler<MouseEvent> () {
 			@Override
 			public void handle(MouseEvent e) {
-				handleClick();
+				GameManager.getInstance().clickQueue((Square) e.getSource());
 			}
     	});
     }
     
-    private void handleClick() {
-    	GameManager.getInstance().clickQueue(this);
-    }
-    
     // Highlight possible moves on mouse enter.
     private void onMouseEnter() {
-    	this.setOnMouseEntered(new EventHandler<MouseEvent> () {
+    	setOnMouseEntered(new EventHandler<MouseEvent> () {
 			@Override
 			public void handle(MouseEvent e) {
 				highlightMoves();
@@ -65,14 +72,16 @@ public class Square extends StackPane {
     
     // Disable highlight on mouse exit.
     private void onMouseExit() {
-    	this.setOnMouseExited(new EventHandler<MouseEvent> () {
+    	setOnMouseExited(new EventHandler<MouseEvent> () {
 			@Override
 			public void handle(MouseEvent e) {
 				highlightMoves();
 			}
     	});
     }
+	// -------------------------------------------------- //
     
+    // JAVAFX EFFECTS
     public void highlightMoves() {
     	if (piece != null) {
 			for (Square s : availableMoves) {
@@ -90,23 +99,9 @@ public class Square extends StackPane {
     	selected = !selected;
     	check.selectFX(selected);
     }
-
-    public void refreshMoves() {
-    	availableMoves.clear();
-    	ArrayList<Point> moves = piece.getMoves((int) point.getX(), (int) point.getY());
-    	System.out.println(piece.toString() + " getMoves() " + moves);
-    	if (moves != null) {
-			for (Point move : moves) {
-				for (Square s : ChessBoard.getBoard()) {
-					if (move.equals(s.getPoint())) {
-						availableMoves.add(s);
-					}
-				}
-			}
-		}
-    	System.out.println(cbn + " availableMoves " + availableMoves);
-    }
+    // -------------------------------------------------- //
     
+    // GET AND SET METHODS
     public ArrayList<Square> getAvailableMoves() {
     	return availableMoves;
     }
@@ -120,16 +115,18 @@ public class Square extends StackPane {
     }
     
     public void setPiece(Piece piece) {
-        if (this.getChildren().size() > 1)
-        	this.getChildren().remove(1);
+        clear();
         this.piece = piece;
         this.getChildren().add(piece);
         refreshMoves();
     }
+ // -------------------------------------------------- //
     
+    // OVERRIDE METHODS
     @Override
     public boolean equals(Object o) {
-		if (o.toString().equals(this.toString()))
+    	Square s = (Square) o;
+		if (s.getPoint().equals(this.point))
 			return true;
     	return false;
     }

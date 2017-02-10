@@ -1,19 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chessgame;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Dani Jompero
- */
 public class ChessGame extends Application {
 
 	ChessBoard cb;
@@ -27,13 +18,14 @@ public class ChessGame extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Shakkipeli");
         
-        Group scene = new Group();
+        VBox scene = new VBox();
         cb = ChessBoard.getInstance();
-        System.out.println(cb);
+        UtilityBar ub = new UtilityBar();
         
+        scene.getChildren().add(ub);
         scene.getChildren().add(cb);
         
-        primaryStage.setScene(new Scene(scene, 550, 550));
+        primaryStage.setScene(new Scene(scene, 550, 585));
         primaryStage.setResizable(false);
         primaryStage.show();
         gm = GameManager.getInstance();

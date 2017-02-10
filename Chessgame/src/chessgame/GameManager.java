@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chessgame;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Dani Jompero
- */
 public class GameManager {
 	
     static int round = 0;
@@ -20,7 +11,8 @@ public class GameManager {
     static GameManager instance;
     
     private GameManager() {
-        defaultStart();
+    	System.out.println(round + 1);
+    	defaultStart();
     }
     
     public static GameManager getInstance() {
@@ -34,7 +26,7 @@ public class GameManager {
     	round++;
     	s = null;
     	validMoves.clear();
-    	System.out.println(round);
+    	System.out.println(round + 1);
     }
     
     public static int getTurn() {
@@ -73,15 +65,18 @@ public class GameManager {
     	System.out.println("[" + from.toString() + " " + to.toString() + "]");
     	to.setPiece(from.getPiece());
     	from.select();
-    	to.highlightMoves();
+    	to.highlightMoves(); // To counter the side effect in the Square mouseEnter and mouseExited handling
     }
     
     public void defaultStart() {
         String backline= "RNBQKBNR"; 
         
+        ArrayList<Square> s = ChessBoard.getBoard();
+        for (Square square : s) {
+        	square.clear();
+        }
+        
         for (int i = 0; i < backline.length(); i++) {
-            ArrayList<Square> s = ChessBoard.getBoard();
-            
             // Set player 2 backline
             s.get(i).setPiece(newPiece(backline.charAt(i), 1));
             // Set player 1 backline
