@@ -93,6 +93,7 @@ public class Square extends StackPane {
     }
 
     public void refreshMoves() {
+    	availableMoves.clear();
     	ArrayList<String> moves = piece.getMoves(x, y);
     	if (moves != null) {
 			for (String move : moves) {
@@ -102,8 +103,6 @@ public class Square extends StackPane {
 					}
 				}
 			}
-		} else {
-			availableMoves.clear();
 		}
     }
     

@@ -34,6 +34,7 @@ public class GameManager {
     	round++;
     	s = null;
     	validMoves.clear();
+    	System.out.println(round);
     }
     
     public static int getTurn() {
@@ -71,6 +72,7 @@ public class GameManager {
     public void movePiece(Square from, Square to) {
     	System.out.println("[" + from.toString() + " " + to.toString() + "]");
     	to.setPiece(from.getPiece());
+    	from.select();
     	to.highlightMoves();
     }
     

@@ -21,6 +21,7 @@ class Check extends Rectangle {
     final Color highlight = Color.YELLOW;
     final int strokeWeight = 2;
     InnerShadow shadow = new InnerShadow(4, 2, 2, Color.BLACK);
+    InnerShadow noShadow = new InnerShadow(0, 0, 0, Color.BLACK);
     
     
     public Check(int x, int y) {
@@ -38,7 +39,11 @@ class Check extends Rectangle {
     }
     
     public void selectFX(boolean isOn) {
-    	this.setEffect(shadow);
+    	if (isOn) {
+    		this.setEffect(shadow);
+    	} else {
+    		this.setEffect(noShadow);
+    	}
     }
 
 }
