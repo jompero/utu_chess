@@ -11,7 +11,6 @@ public class GameManager {
     static GameManager instance;
     
     private GameManager() {
-    	System.out.println(round + 1);
     	defaultStart();
     }
     
@@ -43,16 +42,16 @@ public class GameManager {
     	if (this.s != null) {										// If a square has already been selected
     		if(isValidMove(s)) {									// If the square is in within valid moves
     			movePiece(this.s, s);								// Move piece and proceed with game logic
-    			this.s.highlightMoves();
     			nextRound();
     			return;
-    		}
-    		if (s.getPiece() != null) {
-    			this.s.select();
     		}
     	}
     	if (s.getPiece() != null) {									// Select the square if there is a piece		
     		if (s.getPiece().getPlayer() == getTurn()) {			// And the piece belongs to the player
+        		if (this.s != null) {
+        			this.s.select();
+        			this.s.highlightMoves();
+        		}
     			this.s = s;
             	this.s.highlightMoves();
             	s.select();
@@ -81,9 +80,11 @@ public class GameManager {
     }
     
     public void movePiece(Square from, Square to) {
-    	System.out.println("[" + from.toString() + " " + to.toString() + "]");
+    	System.out.println(Chess.printPGN(round + 1, from, to));
     	to.setPiece(from.getPiece());
     	from.select();
+    	from.highlightMoves();
+    	from.clear();
     }
     
     public void defaultStart() {

@@ -9,7 +9,6 @@ import javafx.scene.layout.StackPane;
 
 public class Square extends StackPane {
     Point point;
-    String cbn;
     ArrayList<Square> availableMoves = new ArrayList<Square>();
     
     // Visual components
@@ -21,7 +20,6 @@ public class Square extends StackPane {
         
     public Square(int x, int y) {
         this.point = new Point(x, y);
-        this.cbn = Chess.cbn(point);
         check = new Check(point);
         this.getChildren().add(check);
         
@@ -47,6 +45,7 @@ public class Square extends StackPane {
     public void clear() {
         if (this.getChildren().size() > 1)
         	this.getChildren().remove(1);
+        piece = null;
     }
     
     // MOUSE EVENT HANDLING
@@ -136,7 +135,7 @@ public class Square extends StackPane {
     public String toString() {
     	String temp = "";
     	if (piece != null) { temp = this.piece.toString(); }
-    	temp += cbn;
+    	temp += Chess.cbn(point);
         return temp;
     }
 }

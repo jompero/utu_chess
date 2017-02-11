@@ -24,4 +24,8 @@ public class Chess {
     public static String cbn(Point p) {
         return String.valueOf((char) (p.getX() + 'A')) + Integer.toString((int) p.getY() + 1);
     }
+    
+    public static String printPGN(int round, Square from, Square to) {
+    	return round + ".[" + from.toString() + " " + to.toString() + "]";
+    }
 }
