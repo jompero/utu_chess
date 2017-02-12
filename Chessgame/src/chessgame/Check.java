@@ -24,6 +24,8 @@ class Check extends Rectangle {
     final int strokeWeight = 2;
     InnerShadow shadow = new InnerShadow(4, 2, 2, Color.BLACK);
     InnerShadow noShadow = new InnerShadow(0, 0, 0, Color.BLACK);
+    InnerShadow glow = new InnerShadow(10, 0, 0, Color.CYAN);
+    InnerShadow noGlow = new InnerShadow(0, 0, 0, Color.YELLOW);
     
     
     public Check(Point p) {
@@ -37,7 +39,11 @@ class Check extends Rectangle {
     }
     
     public void highlightFX(boolean isOn) {
-    	this.setStrokeWidth(isOn ? strokeWeight : 0);
+    	if (isOn) {
+    		this.setEffect(glow);
+    	} else {
+    		this.setEffect(noGlow);
+    	}
     }
     
     public void selectFX(boolean isOn) {

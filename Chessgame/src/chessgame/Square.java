@@ -10,8 +10,7 @@ import javafx.scene.layout.StackPane;
 public class Square extends StackPane {
     Point point;
     ArrayList<Square> availableMoves = new ArrayList<Square>();
-    
-    // Visual components
+
     Check check;
     Piece piece;
     
@@ -48,7 +47,7 @@ public class Square extends StackPane {
         piece = null;
     }
     
-    // MOUSE EVENT HANDLING
+    // -------------- MOUSE EVENT HANDLING -------------- //
     // Prepare or swap piece on click.
     private void onClick() {
     	setOnMousePressed(new EventHandler<MouseEvent> () {
@@ -81,7 +80,7 @@ public class Square extends StackPane {
     }
 	// -------------------------------------------------- //
     
-    // JAVAFX EFFECTS
+    // ----------------- JAVAFX EFFECTS ----------------- //
     public void highlightMoves() {
     	if (piece != null) {
 			for (Square s : availableMoves) {
@@ -101,7 +100,7 @@ public class Square extends StackPane {
     }
     // -------------------------------------------------- //
     
-    // GET AND SET METHODS
+    // --------------- GET AND SET METHODS -------------- //
     public ArrayList<Square> getAvailableMoves() {
     	return availableMoves;
     }
@@ -120,9 +119,9 @@ public class Square extends StackPane {
         this.getChildren().add(piece);
         refreshMoves();
     }
- // -------------------------------------------------- //
+    // -------------------------------------------------- //
     
-    // OVERRIDE METHODS
+    // ---------------- OVERRIDE METHODS ---------------- //
     @Override
     public boolean equals(Object o) {
     	Square s = (Square) o;
