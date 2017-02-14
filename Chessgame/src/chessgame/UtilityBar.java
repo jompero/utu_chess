@@ -66,6 +66,8 @@ class SaveButton extends Button {
 		    public void handle(ActionEvent e) {
 		        if (new Save().SaveData(GameManager.getInstance().getState())) {
 		        	UtilityBar.updateConsole("Game saved!");
+				} else {
+					UtilityBar.updateConsole("Error occured during saving!");
 				}
 		    }
 		});
