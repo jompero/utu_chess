@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chessgame;
 
 import java.util.ArrayList;
 import javafx.scene.layout.GridPane;
 
-/**
- *
- * @author Dani Jompero
- */
 public class ChessBoard extends GridPane {
 
     private static final ArrayList<Square> board = new ArrayList<>(); // Reference to squares on board, call with getBoard from other objects

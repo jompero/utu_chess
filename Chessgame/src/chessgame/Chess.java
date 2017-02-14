@@ -1,21 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chessgame;
 
 import java.awt.Point;
 import java.util.ArrayList;
 
-/**
- *
- * @author Dani Jompero
- */
-/**
- * @author Dani Jompero
- *
- */
 public class Chess {
     public static final int BOARDSIZE = 8;
     public static int SQUARESIZE = 70;

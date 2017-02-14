@@ -1,5 +1,6 @@
 package chessgame;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class GameManager {
@@ -8,6 +9,7 @@ public class GameManager {
     Square s;
     ArrayList<Square> validMoves;
     
+
     static GameManager instance;
     
     private GameManager() {
@@ -20,7 +22,8 @@ public class GameManager {
     	}
     	return instance;
     }
-    
+
+    // ------------------ TURN HANDLING ----------------- //
     private void nextRound() {
     	s = null;
     	validMoves.clear();
@@ -28,15 +31,7 @@ public class GameManager {
     	round++;
     	RoundCounter.getInstance().refresh();
     }
-    
-    public static int getTurn() {
-    	return round % 2;
-    }
-    
-    public static int getRound() {
-    	return round + 1;
-    }
-    
+
     // Places a square with a piece in queue or moves the piece from previously selected square to newly selected (if a valid move)
     public void clickQueue(Square s) {
     	if (this.s != null) {										// If a square has already been selected
@@ -86,7 +81,9 @@ public class GameManager {
     	from.highlightMoves();
     	from.clear();
     }
+    // -------------------------------------------------- //
     
+    // ------------------- PIECE SETUP ------------------ //
     public void defaultStart() {
     	round = 0;
     	RoundCounter.getInstance().refresh();
@@ -123,4 +120,15 @@ public class GameManager {
             default:    return null;
         }
     }
+    // -------------------------------------------------- //
+    
+    // --------------- GET AND SET METHODS -------------- //
+    public static int getTurn() {
+    	return round % 2;
+    }
+    
+    public static int getRound() {
+    	return round + 1;
+    }
+    // -------------------------------------------------- //
 }
