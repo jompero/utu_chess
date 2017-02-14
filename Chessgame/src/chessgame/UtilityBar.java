@@ -12,7 +12,7 @@ public class UtilityBar extends ToolBar {
 	
 	public UtilityBar() {
 		this.getItems().add(new NewGameButton());
-		this.getItems().add(new Button("Load"));
+		this.getItems().add(new LoadButton());
 		this.getItems().add(new SaveButton());
 		this.getItems().add(new Separator());
 		this.getItems().add(RoundCounter.getInstance());
@@ -33,6 +33,25 @@ class NewGameButton extends Button {
 		    @Override 
 		    public void handle(ActionEvent e) {
 		        GameManager.getInstance().defaultStart();
+		    }
+		});
+	}
+}
+
+class LoadButton extends Button {
+	
+	public LoadButton() {
+		setText("Load");
+		setOnAction(new EventHandler<ActionEvent>() {
+		    @Override 
+		    public void handle(ActionEvent e) {
+		    	GameState data = new Save().LoadData();
+		        if (data != null) {
+		        	UtilityBar.updateConsole("Game loaded!");
+		        	GameManager.getInstance().loadState(data);
+				} else {
+					UtilityBar.updateConsole("No save data!");
+				}
 		    }
 		});
 	}
@@ -68,7 +87,7 @@ class RoundCounter extends Label {
 		return controller;
 	}
 	
-	public void refresh() {
-		setText("Round: " + GameManager.getRound());
+	public void refresh(int round) {
+		setText("Round: " + round);
 	}
 }

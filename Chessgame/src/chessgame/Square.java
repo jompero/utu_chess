@@ -13,18 +13,13 @@ public class Square extends StackPane {
 
     Check check;
     Piece piece;
-    
-    private boolean highlighted;
-	private boolean selected;
-        
+      
     public Square(int x, int y) {
         this.point = new Point(x, y);
         check = new Check(point);
         this.getChildren().add(check);
         
         onClick();
-        //onMouseEnter();
-        //onMouseExit();
     }
     
     private void refreshMoves() {
@@ -42,7 +37,8 @@ public class Square extends StackPane {
     }
     
     public void clear() {
-        if (this.getChildren().size() > 1)
+        highlightMoves(false);
+    	if (this.getChildren().size() > 1)
         	this.getChildren().remove(1);
         piece = null;
     }
@@ -57,46 +53,23 @@ public class Square extends StackPane {
 			}
     	});
     }
-    
-    
-    // Highlight possible moves on mouse enter.
-    private void onMouseEnter() {
-    	setOnMouseEntered(new EventHandler<MouseEvent> () {
-			@Override
-			public void handle(MouseEvent e) {
-				highlightMoves();
-			}
-    	});
-    }
-    
-    // Disable highlight on mouse exit.
-    private void onMouseExit() {
-    	setOnMouseExited(new EventHandler<MouseEvent> () {
-			@Override
-			public void handle(MouseEvent e) {
-				highlightMoves();
-			}
-    	});
-    }
 	// -------------------------------------------------- //
     
     // ----------------- JAVAFX EFFECTS ----------------- //
-    public void highlightMoves() {
+    public void highlightMoves(boolean toggle) {
     	if (piece != null) {
 			for (Square s : availableMoves) {
-				s.highlight();
+				s.highlight(toggle);
 			}
 		}
     }
     
-    public void highlight() {
-    	highlighted = !highlighted;
-    	check.highlightFX(highlighted);
+    public void highlight(boolean toggle) {
+    	check.highlightFX(toggle);
     }
     
-    public void select() {
-    	selected = !selected;
-    	check.selectFX(selected);
+    public void select(boolean toggle) {
+    	check.selectFX(toggle);
     }
     // -------------------------------------------------- //
     
