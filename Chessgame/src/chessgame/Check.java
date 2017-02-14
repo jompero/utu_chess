@@ -2,8 +2,6 @@ package chessgame;
 
 import java.awt.Point;
 
-import com.sun.prism.shape.ShapeRep.InvalidationType;
-
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
