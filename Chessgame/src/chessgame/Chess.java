@@ -9,14 +9,20 @@ public class Chess {
     
     /**
      *
-     * @param x 'x' location of given coordinate
-     * @param y 'y' location of given coordinate
-     * @return  the Portable Game Notation of given coordinate
+     * @param p Point location of square
+     * @return  the Chess board notation of given coordinate
      */
     public static String cbn(Point p) {
         return String.valueOf((char) (p.getX() + 'A')) + Integer.toString((int) p.getY() + 1);
     }
     
+    /**
+    *
+    * @param round The round of the move
+    * @param from Square the move starts from
+    * @param to Square the move ends to
+    * @return  the Portable Game Notation of given move
+    */
     public static String printPGN(int round, Square from, Square to) {
     	return round + ".[" + from.toString() + " " + to.toString() + "]";
     }
@@ -24,7 +30,7 @@ public class Chess {
 
     /**
      * @param point Point on board
-     * @param board Chessboard to refer to
+     * @param board Chess board to refer to
      * @return Returns -1 for empty, 0 for player 1, 1 for player 2
      */
     public static int squareState(Point point, ArrayList<Square> board) {
