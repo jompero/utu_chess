@@ -8,25 +8,46 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 
 public class UtilityBar extends ToolBar {
-
+	static Label console;
+	
 	public UtilityBar() {
-		this.getItems().add(new SaveButton());
+		this.getItems().add(new NewGameButton());
 		this.getItems().add(new Button("Load"));
-		this.getItems().add(new Button("Save"));
+		this.getItems().add(new SaveButton());
 		this.getItems().add(new Separator());
 		this.getItems().add(RoundCounter.getInstance());
+		console = new Label();
+		this.getItems().add(console);
 	}
 	
+	public static void updateConsole(String text) {
+		console.setText(text);
+	}
 }
 
-class SaveButton extends Button {
+class NewGameButton extends Button {
 	
-	public SaveButton() {
+	public NewGameButton() {
 		setText("New");
 		setOnAction(new EventHandler<ActionEvent>() {
 		    @Override 
 		    public void handle(ActionEvent e) {
 		        GameManager.getInstance().defaultStart();
+		    }
+		});
+	}
+}
+
+class SaveButton extends Button {
+	
+	public SaveButton() {
+		setText("Save");
+		setOnAction(new EventHandler<ActionEvent>() {
+		    @Override 
+		    public void handle(ActionEvent e) {
+		        if (new Save().SaveData(GameManager.getInstance().getState())) {
+		        	UtilityBar.updateConsole("Game saved!");
+				}
 		    }
 		});
 	}

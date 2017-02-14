@@ -1,5 +1,6 @@
 package chessgame;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.layout.GridPane;
 
@@ -40,6 +41,21 @@ public class ChessBoard extends GridPane {
         for (Square s : board) {
             this.add(s, (int) s.getPoint().getX(), (int) s.getPoint().getY());
         }
+    }
+    
+    public static void clearBoard() {
+        for (Square square : board) {
+        	square.clear();
+        }
+    }
+    
+    public static Square getSquare(Point p) {
+    	for (Square s : board) {
+    		if (s.getPoint().equals(p)) {
+    			return s;
+    		}
+    	}
+    	return null;
     }
     
     @Override

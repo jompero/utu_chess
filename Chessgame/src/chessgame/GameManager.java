@@ -1,14 +1,14 @@
 package chessgame;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 public class GameManager {
 	
+    Square s;						// Queued square (always contains a piece if not null)
+    ArrayList<Square> validMoves;	// Valid moves for queued square
+    GameState state;
+	
     static int round = 0;
-    Square s;
-    ArrayList<Square> validMoves;
-    
 
     static GameManager instance;
     
@@ -32,7 +32,7 @@ public class GameManager {
     	RoundCounter.getInstance().refresh();
     }
 
-    // Places a square with a piece in queue or moves the piece from previously selected square to newly selected (if a valid move)
+    // Places a square with a piece in queue or moves the piece from previously selected square to newly selected if a valid move
     public void clickQueue(Square s) {
     	if (this.s != null) {										// If a square has already been selected
     		if(isValidMove(s)) {									// If the square is in within valid moves
@@ -77,6 +77,7 @@ public class GameManager {
     public void movePiece(Square from, Square to) {
     	System.out.println(Chess.printPGN(round + 1, from, to));
     	to.setPiece(from.getPiece());
+    	state.logTurn(round, from, to);
     	from.select();
     	from.highlightMoves();
     	from.clear();
@@ -84,28 +85,36 @@ public class GameManager {
     // -------------------------------------------------- //
     
     // ------------------- PIECE SETUP ------------------ //
+    public void loadState(GameState state) {
+    	this.state = state;
+    	for (int i = 0; i < state.getMoveHistory().size(); i++) {
+    		Square from = ChessBoard.getSquare(state.moveHistory.get(i));
+    		Square to = ChessBoard.getSquare(state.moveHistory.get(++i));
+    		movePiece(from, to);
+    	}
+    }
+    
     public void defaultStart() {
     	round = 0;
     	RoundCounter.getInstance().refresh();
     	s = null;
+    	state = new GameState();
     	
     	
         String backline= "RNBQKBNR"; 
         
-        ArrayList<Square> s = ChessBoard.getBoard();
-        for (Square square : s) {
-        	square.clear();
-        }
+        ChessBoard.clearBoard();
+        ArrayList<Square> board = ChessBoard.getBoard();
         
         for (int i = 0; i < backline.length(); i++) {
             // Set player 2 backline
-            s.get(i).setPiece(newPiece(backline.charAt(i), 1));
+            board.get(i).setPiece(newPiece(backline.charAt(i), 1));
             // Set player 1 backline
-            s.get(i + 7 * Chess.BOARDSIZE).setPiece(newPiece(backline.charAt(i), 0));
+            board.get(i + 7 * Chess.BOARDSIZE).setPiece(newPiece(backline.charAt(i), 0));
             
             //Set pawns
-            s.get(i + Chess.BOARDSIZE).setPiece(newPiece('P', 1));
-            s.get(i + 6 * Chess.BOARDSIZE).setPiece(newPiece('P', 0));
+            board.get(i + Chess.BOARDSIZE).setPiece(newPiece('P', 1));
+            board.get(i + 6 * Chess.BOARDSIZE).setPiece(newPiece('P', 0));
         }
     }
     
@@ -129,6 +138,10 @@ public class GameManager {
     
     public static int getRound() {
     	return round + 1;
+    }
+    
+    public GameState getState() {
+    	return state;
     }
     // -------------------------------------------------- //
 }
