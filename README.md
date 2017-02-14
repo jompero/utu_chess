@@ -1,5 +1,5 @@
 # utu_chess
-Open University of Turku, Computer Science assignment: Chess
+Open University of Turku, Computer Science assignment: Chess<br>
 Deadline: 16.3.2017
 
 The assignment tasks us to create a simple chess computer game where the following requirements must be met:
