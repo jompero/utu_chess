@@ -12,10 +12,12 @@ public class GameManager {
     ArrayList<Square> validMoves;	// Valid moves for queued square
     GameState state;
 	int round = 0;
+	static int game = 0;
 
     static GameManager instance;
     
     public static GameManager getInstance() {
+    	game++;
     	if (instance == null) {
     		instance = new GameManager();
     	}
@@ -175,6 +177,10 @@ public class GameManager {
     
     public int getRound() {
     	return round + 1;
+    }
+    
+    public int getGame() {
+    	return game;
     }
     
     public void setRound(int round) {

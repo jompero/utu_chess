@@ -55,15 +55,23 @@ class NewGameButton extends Button {
 		setOnAction(new EventHandler<ActionEvent>() {
 		    @Override 
 		    public void handle(ActionEvent e) {
-	    		// Create new dialog box to confirm if a new game is wanted
-	    		Alert newGameAlert = new Alert(AlertType.CONFIRMATION);
-	    		newGameAlert.setTitle("Are you sure?");
-	    		newGameAlert.setContentText("Are you sure you want to start a new game? All unsaved progress will be lost.");
-	    		newGameAlert.setHeaderText(null);
-	    		
-	    		Optional<ButtonType> input = newGameAlert.showAndWait();
-	    		if (input.get() == ButtonType.OK)
+		    	// Create or get the instance of GameManager
+	    		GameManager gm = GameManager.getInstance();
+		    	
+	    		// Pop up an alert if there is already a game going
+	    		if (gm.getGame() > 1) {
+			    	// Create new dialog box to confirm if a new game is wanted
+		    		Alert newGameAlert = new Alert(AlertType.CONFIRMATION);
+		    		newGameAlert.setTitle("Are you sure?");
+		    		newGameAlert.setContentText("Are you sure you want to start a new game? All unsaved progress will be lost.");
+		    		newGameAlert.setHeaderText(null);
+		    		
+		    		Optional<ButtonType> input = newGameAlert.showAndWait();
+		    		if (input.get() == ButtonType.OK)
+		    			GameManager.getInstance().newGame();
+	    		} else {
 	    			GameManager.getInstance().newGame();
+	    		}
 		    }
 		});
 	}
@@ -76,6 +84,22 @@ class LoadButton extends Button {
 		setOnAction(new EventHandler<ActionEvent>() {
 		    @Override 
 		    public void handle(ActionEvent e) {
+		    	// Create or get the instance of GameManager
+	    		GameManager gm = GameManager.getInstance();
+		    	
+	    		// Pop up an alert if there is already a game going
+	    		if (gm.getGame() > 1) {
+			    	// Create new dialog box to confirm if a new game is wanted
+		    		Alert newGameAlert = new Alert(AlertType.CONFIRMATION);
+		    		newGameAlert.setTitle("Are you sure?");
+		    		newGameAlert.setContentText("Are you sure you want to load another game? All unsaved progress will be lost.");
+		    		newGameAlert.setHeaderText(null);
+		    		
+		    		Optional<ButtonType> input = newGameAlert.showAndWait();
+		    		if (input.get() == ButtonType.CANCEL || input.get() == ButtonType.CLOSE)
+		    			return;
+	    		}
+	    		
 		    	// Create new file chooser pop up
 		    	FileChooser fc = new FileChooser();
 		    	// Open it in default directory (sav)
@@ -89,7 +113,7 @@ class LoadButton extends Button {
                 if (file != null) {
 			    	GameState data = new Save().LoadData(file);
 			        if (data != null) {
-			        	GameManager.getInstance().loadGame(data);
+			        	gm.loadGame(data);
 					} else {
 						UtilityBar.updateConsole("Unable to read data!");
 					}
