@@ -13,14 +13,9 @@ public class Save {
 
 		FileOutputStream fout = null;
 		ObjectOutputStream oos = null;
-		String fileType = ".sav";
 
 		try {
-			/*if (!file.getName().endsWith(fileT)) {
-				name += fileType;
-			}*/
-			
-			fout = new FileOutputStream(file);
+			fout = new FileOutputStream(file);	// File type is determined in UtilityBar and is applied regardless of user input
 			oos = new ObjectOutputStream(fout);
 			
 			oos.writeObject(sd);

@@ -19,6 +19,10 @@ public class GameState implements Serializable {
     	moveHistory.add(round * 2 + 1, to.getPoint());
     }
     
+    public String[] getPlayers() {
+    	return players;
+    }
+    
     public String getPlayer(int player) {
     	return players[player];
     }
