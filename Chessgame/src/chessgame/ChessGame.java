@@ -28,6 +28,6 @@ public class ChessGame extends Application {
         primaryStage.setScene(new Scene(scene, 550, 585));
         primaryStage.setResizable(false);
         primaryStage.show();
-        gm = GameManager.getInstance();
+        //gm = GameManager.getInstance();
     }
 }

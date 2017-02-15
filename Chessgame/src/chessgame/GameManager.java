@@ -15,10 +15,6 @@ public class GameManager {
 
     static GameManager instance;
     
-    private GameManager() {
-    	defaultStart();
-    }
-    
     public static GameManager getInstance() {
     	if (instance == null) {
     		instance = new GameManager();
@@ -85,8 +81,14 @@ public class GameManager {
     }
     // -------------------------------------------------- //
     
-    // ------------------- PIECE SETUP ------------------ //
-    public void loadState(GameState state) {
+    // ------------------- GAME SETUP ------------------- //
+    public void newGame() {
+    	defaultStart();
+    	renamePlayers();
+    	setRound(0);
+    }
+    
+    public void loadGame(GameState state) {
     	defaultStart();
     	try {
         	for (int i = 0; i < state.getMoveHistory().size(); i += 2) {
@@ -95,21 +97,17 @@ public class GameManager {
         		movePiece(from, to);
         		round++;
         	}
+        	this.state = state;
         	setRound(round);
     	}
     	catch (NullPointerException npe) {
     		UtilityBar.updateConsole("Save file corrupted!");
     		defaultStart();
+    		npe.printStackTrace();
     	}
     }
     
-    public void defaultStart() {
-    	// Reset rounds and game state
-    	round = 0;
-    	RoundCounter.getInstance().refresh(getRound());
-    	s = null;
-    	state = new GameState();
-    	
+    private void renamePlayers() {
     	// Setup player names
     	for (int i = 0; i < state.getPlayers().length; i++) {
     		// Create new dialog box to change player names with appropriate text
@@ -126,6 +124,18 @@ public class GameManager {
     			state.setPlayer(defaultName, i);
     		}
     	}
+    }
+    // -------------------------------------------------- //
+    
+    // ------------------- PIECE SETUP ------------------ //
+
+    
+    public void defaultStart() {
+    	// Reset rounds and game state
+    	round = 0;
+    	RoundCounter.getInstance().refresh(getRound());
+    	s = null;
+    	state = new GameState();
     	
     	// Place pieces
         String backline= "RNBQKBNR"; 
@@ -143,9 +153,6 @@ public class GameManager {
             board.get(i + Chess.BOARDSIZE).setPiece(newPiece('P', 1));
             board.get(i + 6 * Chess.BOARDSIZE).setPiece(newPiece('P', 0));
         }
-        
-        // Reset utility bar console
-        UtilityBar.updateConsole("Turn: " + state.getPlayer(0));
     }
     
     private Piece newPiece(char piece, int player) {

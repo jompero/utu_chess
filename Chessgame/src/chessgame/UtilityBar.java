@@ -63,7 +63,7 @@ class NewGameButton extends Button {
 	    		
 	    		Optional<ButtonType> input = newGameAlert.showAndWait();
 	    		if (input.get() == ButtonType.OK)
-	    			GameManager.getInstance().defaultStart();
+	    			GameManager.getInstance().newGame();
 		    }
 		});
 	}
@@ -89,7 +89,9 @@ class LoadButton extends Button {
                 if (file != null) {
 			    	GameState data = new Save().LoadData(file);
 			        if (data != null) {
-			        	GameManager.getInstance().loadState(data);
+			        	GameManager.getInstance().loadGame(data);
+					} else {
+						UtilityBar.updateConsole("Unable to read data!");
 					}
                 }
 		    }
