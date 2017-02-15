@@ -1,13 +1,20 @@
 package chessgame;
 
 import java.io.File;
+import java.util.Optional;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -15,13 +22,21 @@ public class UtilityBar extends ToolBar {
 	static Label console;
 	
 	public UtilityBar() {
-		this.getItems().add(new NewGameButton());
-		this.getItems().add(new LoadButton());
-		this.getItems().add(new SaveButton());
-		this.getItems().add(new Separator());
-		this.getItems().add(RoundCounter.getInstance());
+		Pane alignRight = new Pane();
+		HBox.setHgrow(alignRight, Priority.ALWAYS);
+		
 		console = new Label();
-		this.getItems().add(console);
+		
+		this.getItems().addAll(
+				RoundCounter.getInstance(),
+				new Separator(),
+				new Label(),
+				console,
+				alignRight,
+				new NewGameButton(),
+				new LoadButton(),
+				new SaveButton()
+				);
 	}
 	
 	public static void updateConsole(String text) {
@@ -36,7 +51,15 @@ class NewGameButton extends Button {
 		setOnAction(new EventHandler<ActionEvent>() {
 		    @Override 
 		    public void handle(ActionEvent e) {
-		        GameManager.getInstance().defaultStart();
+	    		// Create new dialog box to confirm if a new game is wanted
+	    		Alert newGameAlert = new Alert(AlertType.CONFIRMATION);
+	    		newGameAlert.setTitle("Are you sure?");
+	    		newGameAlert.setContentText("Are you sure you want to start a new game? All unsaved progress will be lost.");
+	    		newGameAlert.setHeaderText(null);
+	    		
+	    		Optional<ButtonType> input = newGameAlert.showAndWait();
+	    		if (input.get() == ButtonType.OK)
+	    			GameManager.getInstance().defaultStart();
 		    }
 		});
 	}
@@ -53,8 +76,10 @@ class LoadButton extends Button {
 		    	FileChooser fc = new FileChooser();
 		    	// Open it in default directory (sav)
 		    	fc.setInitialDirectory(new File("sav"));
-                // Pop dialog
-		    	File file = fc.showOpenDialog(new Stage());
+		    	// Get current stage so that the chess board is locked until pop is closed
+		    	Stage stage = (Stage) getScene().getWindow();
+		    	// Pop dialog
+		    	File file = fc.showOpenDialog(stage);
                 
                 // If a file is selected, load file
                 if (file != null) {
@@ -87,8 +112,10 @@ class SaveButton extends Button {
 	         	FileChooser.ExtensionFilter savExtFilter = new FileChooser.ExtensionFilter("Save files (*.sav)", "*.sav");
 	         	// Apply filter
 	         	fc.getExtensionFilters().add(savExtFilter);
+	         	// Get current stage so that the chess board is locked until pop is closed
+		    	Stage stage = (Stage) getScene().getWindow();	
 		    	// Pop dialog
-                File file = fc.showSaveDialog(new Stage());
+                File file = fc.showSaveDialog(stage);
 		    	
                 // If file is selected, save file
                 if (file != null) {
