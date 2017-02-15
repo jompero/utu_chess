@@ -1,6 +1,10 @@
 package chessgame;
 
 import java.util.ArrayList;
+import java.util.Optional;
+
+import javafx.scene.control.TextInputDialog;
+
 
 public class GameManager {
 	
@@ -84,22 +88,42 @@ public class GameManager {
     // ------------------- PIECE SETUP ------------------ //
     public void loadState(GameState state) {
     	defaultStart();
-    	for (int i = 0; i < state.getMoveHistory().size(); i += 2) {
-    		Square from = ChessBoard.getSquare(state.moveHistory.get(i));
-    		Square to = ChessBoard.getSquare(state.moveHistory.get(i + 1));
-    		movePiece(from, to);
+    	try {
+        	for (int i = 0; i < state.getMoveHistory().size(); i += 2) {
+        		Square from = ChessBoard.getSquare(state.moveHistory.get(i));
+        		Square to = ChessBoard.getSquare(state.moveHistory.get(i + 1));
+        		movePiece(from, to);
+        		round++;
+        	}
+        	setRound(round);
     	}
-    	setRound(state.getMoveHistory().size());
-    	UtilityBar.updateConsole("Game loaded!");
+    	catch (NullPointerException npe) {
+    		UtilityBar.updateConsole("Save file corrupted!");
+    		defaultStart();
+    	}
     }
     
     public void defaultStart() {
+    	// Reset rounds and game state
     	round = 0;
     	RoundCounter.getInstance().refresh(getRound());
     	s = null;
     	state = new GameState();
     	
+    	// Setup player names
+    	for (int i = 0; i < state.getPlayers().length; i++) {
+    		// Create new dialog box to change player names with appropriate text
+    		TextInputDialog renameDialog = new TextInputDialog(state.getPlayer(i));
+    		renameDialog.setTitle("Rename player");
+    		renameDialog.setContentText("Rename " + state.getPlayer(i));
+    		renameDialog.setHeaderText(null);
+    		
+    		Optional<String> input = renameDialog.showAndWait();
+    		int player = i;
+    		input.ifPresent(name -> state.setPlayer(name, player));
+    	}
     	
+    	// Place pieces
         String backline= "RNBQKBNR"; 
         
         ChessBoard.clearBoard();
@@ -116,7 +140,8 @@ public class GameManager {
             board.get(i + 6 * Chess.BOARDSIZE).setPiece(newPiece('P', 0));
         }
         
-        UtilityBar.updateConsole(state.getPlayer(0) + " turn");
+        // Reset utility bar console
+        UtilityBar.updateConsole("Turn: " + state.getPlayer(0));
     }
     
     private Piece newPiece(char piece, int player) {
@@ -144,7 +169,7 @@ public class GameManager {
     public void setRound(int round) {
     	this.round = round;
     	RoundCounter.getInstance().refresh(getRound());
-    	UtilityBar.updateConsole(state.getPlayer(getTurn()) + " turn");
+    	UtilityBar.updateConsole("Turn: " + state.getPlayer(getTurn()));
     }
     
     public GameState getState() {
