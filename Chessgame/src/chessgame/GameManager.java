@@ -113,14 +113,18 @@ public class GameManager {
     	// Setup player names
     	for (int i = 0; i < state.getPlayers().length; i++) {
     		// Create new dialog box to change player names with appropriate text
-    		TextInputDialog renameDialog = new TextInputDialog(state.getPlayer(i));
+    		String defaultName = state.getPlayer(i);
+    		TextInputDialog renameDialog = new TextInputDialog(defaultName);
     		renameDialog.setTitle("Rename player");
-    		renameDialog.setContentText("Rename " + state.getPlayer(i));
+    		renameDialog.setContentText("Rename " + defaultName);
     		renameDialog.setHeaderText(null);
     		
     		Optional<String> input = renameDialog.showAndWait();
     		int player = i;
     		input.ifPresent(name -> state.setPlayer(name, player));
+    		if (state.getPlayer(i).equals("")) {
+    			state.setPlayer(defaultName, i);
+    		}
     	}
     	
     	// Place pieces
