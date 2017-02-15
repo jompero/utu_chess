@@ -22,11 +22,14 @@ public class UtilityBar extends ToolBar {
 	static Label console;
 	
 	public UtilityBar() {
+		// Create a pane to align content to the right
 		Pane alignRight = new Pane();
 		HBox.setHgrow(alignRight, Priority.ALWAYS);
 		
+		// Console to display relevant text
 		console = new Label();
 		
+		// Add and show content of utility bar
 		this.getItems().addAll(
 				RoundCounter.getInstance(),
 				new Separator(),
@@ -39,6 +42,7 @@ public class UtilityBar extends ToolBar {
 				);
 	}
 	
+	// Change text in console
 	public static void updateConsole(String text) {
 		console.setText(text);
 	}
