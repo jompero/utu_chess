@@ -1,5 +1,6 @@
 package chessgame;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,13 +9,18 @@ import java.io.ObjectOutputStream;
 
 public class Save {
 	
-	public boolean SaveData(GameState sd) {
+	public boolean SaveData(File file, GameState sd) {
 
 		FileOutputStream fout = null;
 		ObjectOutputStream oos = null;
+		String fileType = ".sav";
 
 		try {
-			fout = new FileOutputStream("savedata.sav");
+			/*if (!file.getName().endsWith(fileT)) {
+				name += fileType;
+			}*/
+			
+			fout = new FileOutputStream(file);
 			oos = new ObjectOutputStream(fout);
 			
 			oos.writeObject(sd);
@@ -46,13 +52,13 @@ public class Save {
 		}
 	}
 	
-	public GameState LoadData() {
+	public GameState LoadData(File file) {
 
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 
 		try {
-			fis = new FileInputStream("savedata.sav");
+			fis = new FileInputStream(file);
 			ois = new ObjectInputStream(fis);
 			return (GameState) ois.readObject();
 

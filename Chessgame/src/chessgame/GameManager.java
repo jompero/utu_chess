@@ -90,6 +90,7 @@ public class GameManager {
     		movePiece(from, to);
     	}
     	setRound(state.getMoveHistory().size());
+    	UtilityBar.updateConsole("Game loaded!");
     }
     
     public void defaultStart() {

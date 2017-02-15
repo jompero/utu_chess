@@ -1,11 +1,15 @@
 package chessgame;
 
+import java.io.File;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class UtilityBar extends ToolBar {
 	static Label console;
@@ -45,13 +49,20 @@ class LoadButton extends Button {
 		setOnAction(new EventHandler<ActionEvent>() {
 		    @Override 
 		    public void handle(ActionEvent e) {
-		    	GameState data = new Save().LoadData();
-		        if (data != null) {
-		        	UtilityBar.updateConsole("Game loaded!");
-		        	GameManager.getInstance().loadState(data);
-				} else {
-					UtilityBar.updateConsole("No save data!");
-				}
+		    	// Create new file chooser pop up
+		    	FileChooser fc = new FileChooser();
+		    	// Open it in default directory (sav)
+		    	fc.setInitialDirectory(new File("sav"));
+                // Pop dialog
+		    	File file = fc.showOpenDialog(new Stage());
+                
+                // If a file is selected, load file
+                if (file != null) {
+			    	GameState data = new Save().LoadData(file);
+			        if (data != null) {
+			        	GameManager.getInstance().loadState(data);
+					}
+                }
 		    }
 		});
 	}
@@ -64,11 +75,29 @@ class SaveButton extends Button {
 		setOnAction(new EventHandler<ActionEvent>() {
 		    @Override 
 		    public void handle(ActionEvent e) {
-		        if (new Save().SaveData(GameManager.getInstance().getState())) {
-		        	UtilityBar.updateConsole("Game saved!");
-				} else {
-					UtilityBar.updateConsole("Error occured during saving!");
-				}
+		    	GameState save = GameManager.getInstance().getState();
+		    	
+		    	// Create new file chooser pop up
+		    	FileChooser fc = new FileChooser();
+		    	// Open it in default directory (sav)
+		    	fc.setInitialDirectory(new File("sav"));
+		    	// Set default name
+		    	fc.setInitialFileName(save.getPlayer(0) + " vs " + save.getPlayer(1) + ".sav");
+		    	// Create new filter for custom save files
+	         	FileChooser.ExtensionFilter savExtFilter = new FileChooser.ExtensionFilter("Save files (*.sav)", "*.sav");
+	         	// Apply filter
+	         	fc.getExtensionFilters().add(savExtFilter);
+		    	// Pop dialog
+                File file = fc.showSaveDialog(new Stage());
+		    	
+                // If file is selected, save file
+                if (file != null) {
+    		        if (new Save().SaveData(file, save)) {
+    		        	UtilityBar.updateConsole("Game saved!");
+    				} else {
+    					UtilityBar.updateConsole("Error occured during saving!");
+    				}
+                }
 		    }
 		});
 	}

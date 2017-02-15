@@ -17,7 +17,6 @@ public class GameState implements Serializable {
     public void logTurn(int round, Square from, Square to) {
     	moveHistory.add(round * 2, from.getPoint());
     	moveHistory.add(round * 2 + 1, to.getPoint());
-    	System.out.println(moveHistory);
     }
     
     public String getPlayer(int player) {
