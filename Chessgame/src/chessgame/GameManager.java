@@ -92,6 +92,8 @@ public class GameManager {
     
     public void loadGame(GameState state) {
     	defaultStart();
+    	System.out.println("[" + state.getPlayer(0) + "]");
+    	System.out.println("[" + state.getPlayer(1) + "]");
     	try {
         	for (int i = 0; i < state.getMoveHistory().size(); i += 2) {
         		Square from = ChessBoard.getSquare(state.moveHistory.get(i));
@@ -125,6 +127,7 @@ public class GameManager {
     		if (state.getPlayer(i).equals("")) {
     			state.setPlayer(defaultName, i);
     		}
+    		System.out.println("[" + state.getPlayer(i) + "]");
     	}
     }
     // -------------------------------------------------- //
