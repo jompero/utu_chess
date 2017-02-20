@@ -7,9 +7,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
@@ -17,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class UtilityBar extends ToolBar {
 	static Label console;
@@ -29,6 +31,14 @@ public class UtilityBar extends ToolBar {
 		// Console to display relevant text
 		console = new Label();
 		
+		//ObservableList<Button> buttons;
+		//buttons.add(new NewGameButton());
+		//buttons.add(new LoadButton());
+		//buttons.add(new SaveButton());
+		
+		MenuButton menuButton = new MenuButton("Game");
+		menuButton.getItems().addAll(new NewGameButton(), new SaveButton(), new LoadButton());
+		
 		// Add and show content of utility bar
 		this.getItems().addAll(
 				RoundCounter.getInstance(),
@@ -36,10 +46,12 @@ public class UtilityBar extends ToolBar {
 				new Label(),
 				console,
 				alignRight,
-				new NewGameButton(),
-				new LoadButton(),
-				new SaveButton()
+				menuButton
 				);
+	}
+	
+	public static Window getWindow() {
+		return console.getScene().getWindow();
 	}
 	
 	// Change text in console
@@ -48,7 +60,7 @@ public class UtilityBar extends ToolBar {
 	}
 }
 
-class NewGameButton extends Button {
+class NewGameButton extends MenuItem {
 	
 	public NewGameButton() {
 		setText("New");
@@ -59,7 +71,7 @@ class NewGameButton extends Button {
 	    		GameManager gm = GameManager.getInstance();
 		    	
 	    		// Pop up an alert if there is already a game going
-	    		if (gm.getGame() > 1) {
+	    		if (gm.getGame() > 0) {
 			    	// Create new dialog box to confirm if a new game is wanted
 		    		Alert newGameAlert = new Alert(AlertType.CONFIRMATION);
 		    		newGameAlert.setTitle("Are you sure?");
@@ -77,7 +89,7 @@ class NewGameButton extends Button {
 	}
 }
 
-class LoadButton extends Button {
+class LoadButton extends MenuItem {
 	
 	public LoadButton() {
 		setText("Load");
@@ -88,7 +100,7 @@ class LoadButton extends Button {
 	    		GameManager gm = GameManager.getInstance();
 		    	
 	    		// Pop up an alert if there is already a game going
-	    		if (gm.getGame() > 1) {
+	    		if (gm.getGame() > 0) {
 			    	// Create new dialog box to confirm if a new game is wanted
 		    		Alert newGameAlert = new Alert(AlertType.CONFIRMATION);
 		    		newGameAlert.setTitle("Are you sure?");
@@ -104,8 +116,8 @@ class LoadButton extends Button {
 		    	FileChooser fc = new FileChooser();
 		    	// Open it in default directory (sav)
 		    	fc.setInitialDirectory(new File("sav"));
-		    	// Get current stage so that the chess board is locked until pop is closed
-		    	Stage stage = (Stage) getScene().getWindow();
+		    	// Get current stage so that the chess board is locked until pop up is closed
+		    	Stage stage = (Stage) UtilityBar.getWindow();
 		    	// Pop dialog
 		    	File file = fc.showOpenDialog(stage);
                 
@@ -123,7 +135,7 @@ class LoadButton extends Button {
 	}
 }
 
-class SaveButton extends Button {
+class SaveButton extends MenuItem {
 	
 	public SaveButton() {
 		setText("Save");
@@ -131,6 +143,11 @@ class SaveButton extends Button {
 		    @Override 
 		    public void handle(ActionEvent e) {
 		    	GameState save = GameManager.getInstance().getState();
+		    	
+		    	if (save == null) {
+		    		UtilityBar.updateConsole("No game state!");
+		    		return;
+		    	}
 		    	
 		    	// Create new file chooser pop up
 		    	FileChooser fc = new FileChooser();
@@ -142,8 +159,8 @@ class SaveButton extends Button {
 	         	FileChooser.ExtensionFilter savExtFilter = new FileChooser.ExtensionFilter("Save files (*.sav)", "*.sav");
 	         	// Apply filter
 	         	fc.getExtensionFilters().add(savExtFilter);
-	         	// Get current stage so that the chess board is locked until pop is closed
-		    	Stage stage = (Stage) getScene().getWindow();	
+	         	// Get current stage so that the chess board is locked until pop up is closed
+		    	Stage stage = (Stage) UtilityBar.getWindow();
 		    	// Pop dialog
                 File file = fc.showSaveDialog(stage);
 		    	

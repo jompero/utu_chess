@@ -17,7 +17,6 @@ public class GameManager {
     static GameManager instance;
     
     public static GameManager getInstance() {
-    	game++;
     	if (instance == null) {
     		instance = new GameManager();
     	}
@@ -139,6 +138,7 @@ public class GameManager {
 
     
     public void defaultStart() {
+    	game++;
     	// Reset rounds and game state
     	round = 0;
     	RoundCounter.getInstance().refresh(getRound());
