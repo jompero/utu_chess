@@ -16,7 +16,10 @@ public class ChessBoard extends GridPane {
         drawBoard();
     }
     
-    // Singleton instance of ChessBoard
+    /**
+     * Only one instance of ChessBoard can be active at a time. It will be instanced by the main class through this method instead of a constructor.
+     * @return The Singleton instance of ChessBoard. If one is not active, it will be created.
+     */
     public static ChessBoard getInstance() {
     	if (instance == null) {
     		return new ChessBoard();

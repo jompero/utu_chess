@@ -32,7 +32,10 @@ public class GameManager {
     	setRound(++round);
     }
 
-    // Places a square with a piece in queue or moves the piece from previously selected square to newly selected if a valid move
+    /** Places a square with a piece in queue or moves the piece from previously selected square to newly selected if a valid move
+     * 
+     * @param s New square selection
+     */
     public void clickQueue(Square s) {
     	if (this.s != null) {										// If a square has already been selected
     		if(isValidMove(s)) {									// If the square is in within valid moves
