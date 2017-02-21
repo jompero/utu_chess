@@ -1,5 +1,7 @@
 package chessgame;
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -16,7 +18,12 @@ public class ChessGame extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Shakkipeli");
+    	File dir = new File("sav");
+    	if (!dir.exists()) {
+    		dir.mkdir();
+    	}
+    	
+    	primaryStage.setTitle("Shakkipeli");
         
         VBox scene = new VBox();
         cb = ChessBoard.getInstance();
