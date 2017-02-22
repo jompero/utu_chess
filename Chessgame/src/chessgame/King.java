@@ -1,7 +1,5 @@
 package chessgame;
 
-import java.awt.Point;
-import java.util.ArrayList;
 import javafx.scene.image.Image;
 
 public class King extends Piece {
