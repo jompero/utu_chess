@@ -12,6 +12,7 @@ public class ChessBoard extends GridPane {
     
     
     private ChessBoard() {
+    	instance = this;
         createBoard();
         drawBoard();
     }
@@ -36,7 +37,7 @@ public class ChessBoard extends GridPane {
         }
     }
     
-    public static ArrayList<Square> getBoard() {
+    public ArrayList<Square> getBoard() {
     	return board;
     }
     
@@ -46,13 +47,13 @@ public class ChessBoard extends GridPane {
         }
     }
     
-    public static void clearBoard() {
+    public void clearBoard() {
         for (Square square : board) {
         	square.clear();
         }
     }
     
-    public static Square getSquare(Point p) {
+    public Square getSquare(Point p) {
     	for (Square s : board) {
     		if (s.getPoint().equals(p)) {
     			return s;
@@ -66,7 +67,7 @@ public class ChessBoard extends GridPane {
         String temp = "";
         for (Square s : board) {
         	String piece = "";
-        	if (s.piece != null) {
+        	if (s.getPiece() != null) {
         		piece = s.getPiece().toString();
         	}
         	temp += "[" + piece + s.toString() + "]";

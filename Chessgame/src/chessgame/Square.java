@@ -1,18 +1,17 @@
 package chessgame;
 
 import java.awt.Point;
-import java.util.ArrayList;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
 public class Square extends StackPane {
-    Point point;
-    ArrayList<Square> availableMoves = new ArrayList<Square>();
-
-    Check check;
-    Piece piece;
+	// Point data and visuals
+    private Point point;
+    private Check check;
+    // Contains a possible
+    private Piece piece;
       
     public Square(int x, int y) {
         this.point = new Point(x, y);
@@ -22,22 +21,7 @@ public class Square extends StackPane {
         onClick();
     }
     
-    private void refreshMoves() {
-    	availableMoves.clear();
-    	ArrayList<Point> moves = piece.getMoves((int) point.getX(), (int) point.getY());
-    	if (moves != null) {
-			for (Point move : moves) {
-				for (Square s : ChessBoard.getBoard()) {
-					if (move.equals(s.getPoint())) {
-						availableMoves.add(s);
-					}
-				}
-			}
-		}
-    }
-    
     public void clear() {
-        highlightMoves(false);
     	if (this.getChildren().size() > 1)
         	this.getChildren().remove(1);
         piece = null;
@@ -56,14 +40,6 @@ public class Square extends StackPane {
 	// -------------------------------------------------- //
     
     // ----------------- JAVAFX EFFECTS ----------------- //
-    public void highlightMoves(boolean toggle) {
-    	if (piece != null) {
-			for (Square s : availableMoves) {
-				s.highlight(toggle);
-			}
-		}
-    }
-    
     public void highlight(boolean toggle) {
     	check.highlightFX(toggle);
     }
@@ -74,10 +50,6 @@ public class Square extends StackPane {
     // -------------------------------------------------- //
     
     // --------------- GET AND SET METHODS -------------- //
-    public ArrayList<Square> getAvailableMoves() {
-    	return availableMoves;
-    }
-    
     public Point getPoint() {
     	return point;
     }
@@ -90,7 +62,6 @@ public class Square extends StackPane {
         clear();
         this.piece = piece;
         this.getChildren().add(piece);
-        refreshMoves();
     }
     // -------------------------------------------------- //
     

@@ -21,9 +21,11 @@ abstract class Piece extends ImageView {
         this.setImage(sprite);
     }
     
-    public ArrayList<Point> getMoves(int x, int y){
+    public ArrayList<Point> getMoves(Point point){
+    	int x = (int) point.getX();
+    	int y = (int) point.getY();
     	ArrayList<Point> moves = new ArrayList<>();
-    	ArrayList<Square> board = ChessBoard.getBoard();
+    	ArrayList<Square> board = ChessBoard.getInstance().getBoard();
     	
     	for (int[] move : moveSet){
     		for(int i=0;i<range;i++){
