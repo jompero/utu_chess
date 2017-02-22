@@ -14,10 +14,6 @@ public class King extends Piece {
         drawSprite();
     }
     
-    public boolean isValid() {
-        return false;
-    }
-    
     @Override
     public String toString() {
         return player == 0 ? "K" : "k";

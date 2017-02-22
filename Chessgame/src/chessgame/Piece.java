@@ -8,8 +8,6 @@ import javafx.scene.image.ImageView;
 abstract class Piece extends ImageView {
     protected Image sprite;
     protected int player;
-    protected boolean isKing;
-    protected Square square;
     protected int range = 8;
     protected int[][] moveSet = {{1,-1},{1,0},{1,1},{0,-1},{0,1},{-1,-1},{-1,0},{-1,1}};
     
