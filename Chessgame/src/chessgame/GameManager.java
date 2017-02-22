@@ -134,11 +134,11 @@ public class GameManager {
     	        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
     	            if (!newValue.matches("\\d*")) {
     	            	newValue = newValue.replaceAll("[^\\w]", "");
-    	                if (newValue.length() > 7) {
-    	                	newValue = newValue.substring(0, 8);
-    	                }
-    	                textField.setText(newValue);
     	            }
+	                if (newValue.length() > 7) {
+	                	newValue = newValue.substring(0, 8);
+	                }
+	                textField.setText(newValue);
     	        }
     	    });
     		
