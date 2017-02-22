@@ -12,7 +12,7 @@ abstract class Piece extends ImageView {
     protected Square square;
     protected int range;
     protected int direction;
-    int[][] moveSet;
+    protected int[][] moveSet;
     
     public Piece(int player) {
         this.player = player;
