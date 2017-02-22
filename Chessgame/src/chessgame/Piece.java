@@ -10,6 +10,9 @@ abstract class Piece extends ImageView {
     protected int player;
     protected boolean isKing;
     protected Square square;
+    protected int range;
+    protected int direction;
+    int[][] moveSet;
     
     public Piece(int player) {
         this.player = player;
@@ -25,5 +28,14 @@ abstract class Piece extends ImageView {
         this.setImage(sprite);
     }
     
-    public abstract ArrayList<Point> getMoves(int x, int y);
+    public ArrayList<Point> getMoves(int x, int y){
+    	ArrayList<Point> moves = new ArrayList<>();
+    	ArrayList<Square> board = ChessBoard.getBoard();
+    	int[][] moveSet = new int[][] {{1, 2}, {-1, 2}, {2, 1}, {-2, 1}, {1,-2}, {-1,-2}, {2,-1}, {-2,-1}};
+    	
+    	for (int[] move : moveSet){
+            moves.add(new Point(x + move[0], y + move[1]));
+        }
+    	return moves;
+    }
 }

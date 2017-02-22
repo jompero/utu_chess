@@ -25,7 +25,6 @@ public class Rook extends Piece {
         drawSprite();
     }
 
-    @Override
     public ArrayList<Point> getMoves(int x, int y) {
         ArrayList<Point> moves = new ArrayList<>();
         return moves;
