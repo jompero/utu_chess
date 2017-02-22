@@ -23,7 +23,6 @@ public class Bishop extends Piece {
         sprite = player == 0 ? new Image(spriteWhite) : new Image(spriteBlack);
         drawSprite();
     }
-
     
     @Override
     public String toString() {

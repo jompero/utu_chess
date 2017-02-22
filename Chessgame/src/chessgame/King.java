@@ -17,29 +17,12 @@ public class King extends Piece {
     String spriteWhite = "img/kw.png";
     String spriteBlack = "img/kb.png";
     
-    // Offset of all possible moves
-    int[][] moveSet = {
-        {1,-1},
-        {1,0},
-        {1,1},
-        {0,-1},
-        {0,1},
-        {-1,-1},
-        {-1,0},
-        {-1,1}
-    };
     
     public King(int player) {
         super(player);
         sprite = player == 0 ? new Image(spriteWhite) : new Image(spriteBlack);
-        isKing = true;
+        setRange(1);
         drawSprite();
-    }
-    
-    @Override
-    public ArrayList<Point> getMoves(int x, int y) {
-        ArrayList<Point> moves = new ArrayList<>();
-        return moves;
     }
     
     public boolean isValid() {
