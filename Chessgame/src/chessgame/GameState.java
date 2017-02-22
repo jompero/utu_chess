@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GameState implements Serializable {
-    String[] players = {"Player 1", "Player 2"};
+    String[] players = {"Player1", "Player2"};
     ArrayList<Point> moveHistory = new ArrayList<>();
     
     private static final long serialVersionUID = 1L;

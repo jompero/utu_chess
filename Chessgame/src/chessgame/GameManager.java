@@ -3,6 +3,9 @@ package chessgame;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 
 
@@ -120,8 +123,24 @@ public class GameManager {
     		String defaultName = state.getPlayer(i);
     		TextInputDialog renameDialog = new TextInputDialog(defaultName);
     		renameDialog.setTitle("Rename player");
-    		renameDialog.setContentText("Rename " + defaultName);
+    		renameDialog.setContentText("Rename " + defaultName + ".\n\nName cannot be longer than 8 characters\nand may only contain word characters.");
     		renameDialog.setHeaderText(null);
+    		
+    		// Get text field from the text input dialog
+    		TextField textField = renameDialog.getEditor();
+    		// And limit it's content to alphabetic characters and numbers and to maximum of 8 characters
+    	    textField.textProperty().addListener(new ChangeListener<String>() {
+    	        @Override
+    	        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+    	            if (!newValue.matches("\\d*")) {
+    	            	newValue = newValue.replaceAll("[^\\w]", "");
+    	                if (newValue.length() > 7) {
+    	                	newValue = newValue.substring(0, 8);
+    	                }
+    	                textField.setText(newValue);
+    	            }
+    	        }
+    	    });
     		
     		Optional<String> input = renameDialog.showAndWait();
     		int player = i;
