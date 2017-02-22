@@ -1,5 +1,6 @@
 package chessgame;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -11,12 +12,17 @@ import javafx.scene.control.TextInputDialog;
 
 public class GameManager {
 	
-    Square s;						// Queued square (always contains a piece if not null)
-    ArrayList<Square> validMoves;	// Valid moves for queued square
+	// Cached data from selected square
+    Square s;						// Square selection
+    ArrayList<Point> validMoves;	// Valid moves for piece in the selected square
+    
+    // Game data
     GameState state;
 	int round = 0;
 	static int game = 0;
-
+	ChessBoard cb = ChessBoard.getInstance();
+	
+	// Singleton instance of GameManager
     static GameManager instance;
     
     public static GameManager getInstance() {
@@ -49,14 +55,16 @@ public class GameManager {
     	if (s.getPiece() != null) {									// Select the square if there is a piece		
     		if (s.getPiece().getPlayer() == getTurn()) {			// And the piece belongs to the player
         		if (this.s != null) {
+        			highlightMoves(false);
         			this.s.select(false);							// Unselect previous selection
-        			this.s.highlightMoves(false);
+        			
         		}
     			this.s = s;											// Select new selection
-            	this.s.highlightMoves(true);
+    			validMoves = s.getPiece().getMoves(s.getPoint());
             	s.select(true);
+            	highlightMoves(true);
             	if (s.getPiece() != null) {
-            		validMoves = s.getAvailableMoves();
+            		validMoves = s.getPiece().getMoves(s.getPoint());
             	} else {
             		validMoves.clear();
             	}
@@ -64,26 +72,40 @@ public class GameManager {
     	}
     }
     
+    private void highlightMoves(boolean isOn) {
+    	for (Point move : validMoves) {
+    		Square s = cb.getSquare(move);
+    		if (s != null) {
+    			s.highlight(isOn);
+    		}
+    	}
+    }
+    
+    // Verify if move is within validMoves
     private boolean isValidMove(Square s) {
-    	for (Square move : validMoves) {
-    		if (move == s) {
-    			if (s.getPiece() != null) {
-    				if (s.getPiece().getPlayer() != getTurn()) {
-    					return true;
-    				}
-    			} else {
-    				return true;
-    			}
+    	
+    	//////DELETE WHEN GETMOVES LOGIC IS DONE//////
+    	if (s.getPiece() != null) {
+    		if (s.getPiece().getPlayer() == getTurn()) {
+    			return false;
+    		}
+    	}
+    	//////////////////////////////////////////////
+    	
+    	for (Point move : validMoves) {
+    		if (move.equals(s.getPoint())) {
+    			return true;
     		}
     	}
     	return false;
     }
     
-    public void movePiece(Square from, Square to) {
+    private void movePiece(Square from, Square to) {
     	System.out.println(Chess.printPGN(round + 1, from, to));
     	to.setPiece(from.getPiece());
     	state.logTurn(round, from, to);
     	from.select(false);
+    	highlightMoves(false);
     	from.clear();
     }
     // -------------------------------------------------- //
@@ -101,8 +123,8 @@ public class GameManager {
     	System.out.println("[" + state.getPlayer(1) + "]");
     	try {
         	for (int i = 0; i < state.getMoveHistory().size(); i += 2) {
-        		Square from = ChessBoard.getSquare(state.moveHistory.get(i));
-        		Square to = ChessBoard.getSquare(state.moveHistory.get(i + 1));
+        		Square from = cb.getSquare(state.moveHistory.get(i));
+        		Square to = cb.getSquare(state.moveHistory.get(i + 1));
         		movePiece(from, to);
         		round++;
         	}
@@ -154,9 +176,8 @@ public class GameManager {
     // -------------------------------------------------- //
     
     // ------------------- PIECE SETUP ------------------ //
-
-    
-    public void defaultStart() {
+    private void defaultStart() {
+    	// Add 1 to game counter, used by UtilityBar to determine which alert is to be displayed
     	game++;
     	// Reset rounds and game state
     	round = 0;
@@ -167,8 +188,8 @@ public class GameManager {
     	// Place pieces
         String backline= "RNBQKBNR"; 
         
-        ChessBoard.clearBoard();
-        ArrayList<Square> board = ChessBoard.getBoard();
+        cb.clearBoard();
+        ArrayList<Square> board = cb.getBoard();
         
         for (int i = 0; i < backline.length(); i++) {
             // Set player 2 backline

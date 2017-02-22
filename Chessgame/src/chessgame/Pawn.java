@@ -20,36 +20,35 @@ public class Pawn extends Piece {
     }
     
     @Override
-    public ArrayList<Point> getMoves(int x, int y) {
-        ArrayList<Point> moves = new ArrayList<>();
-        if (player == 1) {
-        	if(hasMoved==false){
-            	for (int[] move : moveSet){
-            		moves.add(new Point(x + move[0], y + move[1]));
-            		hasMoved=true;
-            	}
-            }
-        	else{
-        			for (int[] move : moveSet2){
-            		moves.add(new Point(x + move[0], y + move[1]));	
-        		}
-        	}
-        	
-        } else {
-        	if(hasMoved==false){
-            	for (int[] move : moveSet){
-            		moves.add(new Point(x - move[0], y - move[1]));
-            		hasMoved=true;
-            	}
-            }
-        	else{
-        			for (int[] move : moveSet2){
-            		moves.add(new Point(x - move[0], y - move[1]));	
-        		}
-        	}
-        }
-        return moves;
-    }
+    public ArrayList<Point> getMoves(Point point) {
+    	int x = (int) point.getX();
+    	int y = (int) point.getY();
+    	
+    	if (y != 6 - (player * 5)) {
+    		hasMoved = true;
+    	}
+    	
+		ArrayList<Point> moves = new ArrayList<>();
+		if (player == 1) {
+			if (hasMoved == false) {
+				for (int[] move : moveSet) {
+					moves.add(new Point(x + move[0], y + move[1]));
+				}
+			} else {
+				moves.add(new Point(x + moveSet[0][0], y + moveSet[0][1]));
+			}
+
+		} else {
+			if (hasMoved == false) {
+				for (int[] move : moveSet) {
+					moves.add(new Point(x - move[0], y - move[1]));
+				}
+			} else {
+				moves.add(new Point(x - moveSet[0][0], y - moveSet[0][1]));
+			}
+		}
+		return moves;
+	}
     
     @Override
     public String toString() {
