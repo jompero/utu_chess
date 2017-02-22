@@ -24,10 +24,6 @@ public class Bishop extends Piece {
         drawSprite();
     }
 
-    public ArrayList<Point> getMoves(int x, int y) {
-        ArrayList<Point> moves = new ArrayList<>();
-        return moves;
-    }
     
     @Override
     public String toString() {

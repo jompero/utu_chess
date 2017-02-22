@@ -31,10 +31,13 @@ abstract class Piece extends ImageView {
     public ArrayList<Point> getMoves(int x, int y){
     	ArrayList<Point> moves = new ArrayList<>();
     	ArrayList<Square> board = ChessBoard.getBoard();
-    	int[][] moveSet = new int[][] {{1, 2}, {-1, 2}, {2, 1}, {-2, 1}, {1,-2}, {-1,-2}, {2,-1}, {-2,-1}};
+    	int[][] moveSet = {{1,-1},{1,0},{1,1},{0,-1},{0,1},{-1,-1},{-1,0},{-1,1}};
+    	range = 8;
     	
     	for (int[] move : moveSet){
-            moves.add(new Point(x + move[0], y + move[1]));
+    		for(int i=0;i<range;i++){
+    			moves.add(new Point(x + (move[i]*(i+1)), y + (move[i]*(i+1))));
+    		}
         }
     	return moves;
     }
