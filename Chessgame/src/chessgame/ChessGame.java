@@ -16,7 +16,6 @@ public class ChessGame extends Application {
         Application.launch(args);
     }
     
-    @Override
     public void start(Stage primaryStage) {
     	File dir = new File("sav");
     	if (!dir.exists()) {
