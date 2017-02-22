@@ -45,4 +45,7 @@ abstract class Piece extends ImageView {
     protected void setRange(int range) {
     	this.range = range;
     }
+    protected void setMoveSet(int[][] moveSet) {
+    	this.moveSet = moveSet;
+    }
 }

@@ -20,6 +20,8 @@ public class Bishop extends Piece {
     
     public Bishop(int player) {
         super(player);
+        setRange(8);
+        setMoveSet(new int[][] {{1,1},{-1,1},{1,-1},{-1,-1}});
         sprite = player == 0 ? new Image(spriteWhite) : new Image(spriteBlack);
         drawSprite();
     }
