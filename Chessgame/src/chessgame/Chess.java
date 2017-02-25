@@ -26,21 +26,4 @@ public class Chess {
     public static String printPGN(int round, Square from, Square to) {
     	return round + ".[" + from.toString() + " " + to.toString() + "]";
     }
-    
-
-    /**
-     * @param point Point on board
-     * @param board Chess board to refer to
-     * @return Returns -1 for empty, 0 for player 1, 1 for player 2
-     */
-    public static int squareState(Point point, ArrayList<Square> board) {
-    	for (Square s : board) {
-    		if (s.getPoint().equals(point)) {
-    			if (s.getPoint() != null) {
-    				return s.getPiece().getPlayer();
-    			}
-    		}
-    	}
-    	return -1;
-    }
 }

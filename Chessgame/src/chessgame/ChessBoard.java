@@ -62,6 +62,21 @@ public class ChessBoard extends GridPane {
     	return null;
     }
     
+    /**
+     * @param point Point on board
+     * @param board Chess board to refer to
+     * @return Returns -1 for empty, 0 for player 1, 1 for player 2
+     */
+    public int squareState(Point point) {
+    	Square s = getSquare(point);
+		if (s != null) {
+			if (s.getPiece() != null) {
+				return s.getPiece().getPlayer();
+			}
+		}
+    	return -1;
+    }
+    
     @Override
     public String toString() {
         String temp = "";
