@@ -2,7 +2,9 @@ package chessgame;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -21,6 +23,7 @@ public class GameManager {
 	int round = 0;
 	static int game = 0;
 	ChessBoard cb = ChessBoard.getInstance();
+	ArrayList<Square> board = cb.getBoard();
 	
 	// Singleton instance of GameManager
     static GameManager instance;
@@ -34,12 +37,82 @@ public class GameManager {
 
     // ------------------ TURN HANDLING ----------------- //
     private void nextRound() {
+    	if (isCheck(getTurn())) {
+    		ArrayList<Point> moveHistory = state.getMoveHistory();
+    		moveHistory.remove(moveHistory.size() - 1);
+    		moveHistory.remove(moveHistory.size() - 1);
+    		loadGame(state);
+    		UtilityBar.updateConsole("Cannot move to check. Turn: " + state.getPlayer(getTurn()));
+    		return;
+    	}
+    	
     	s = null;
     	validMoves.clear();
     	
+    	checkWinCondition();
+    	
     	setRound(++round);
     }
-
+    
+    
+    // Check and mate
+    private boolean isCheck(int player) {
+    	Square king = cb.getKing(player);
+    	Point p = king.getPoint();
+    	
+    	for (Point move : playerMoves(1 - player)) {
+    		if (move.equals(p)) {
+    			System.out.println("isCheck");
+    			return true;
+    		}
+    	}
+    	System.out.println("isNotCheck");
+    	return false;
+    }
+    
+    private boolean checkWinCondition() {
+    	Piece p;
+    	
+    	ArrayList<Point> moveThis = playerMoves(getTurn());
+    	ArrayList<Point> movesNext = playerMoves(1 - getTurn());
+    	
+    	for (Square s : board) {
+    		p = s.getPiece();
+    		if (p != null) {
+    			if (p instanceof King && p.getPlayer() != getTurn()) {
+    				ArrayList<Point> movesKing = p.getMoves(s.getPoint());
+    				
+    			}
+    		}
+    	}
+    	return true;
+    }
+    
+	/**
+	 * 
+	 * @param player 0 || 1
+	 * @return ArrayList of all player 0 || 1 moves
+	 */
+    private ArrayList<Point> playerMoves(int player) {
+    	ArrayList<Point> moves = new ArrayList<>();
+    	
+    	Set<Point> hs = new HashSet<>();
+    	for (Square s : board) {
+    		Piece p = s.getPiece();
+    		if (p != null) {
+    			if (p.getPlayer() == player) {
+    				hs.addAll(p.getMoves(s.getPoint()));
+    			}
+    		}
+    	}
+    	moves.addAll(hs);
+    	
+    	return moves;
+    }
+    
+    // -------------------------------------------------- //
+    
+    // ------------------ PIECE MOVEMENT ---------------- //
     /** Places a square with a piece in queue or moves the piece from previously selected square to newly selected if a valid move
      * 
      * @param s New square selection
@@ -72,6 +145,7 @@ public class GameManager {
     	}
     }
     
+    // Enable javaFX stroke on validMoves
     private void highlightMoves(boolean isOn) {
     	for (Point move : validMoves) {
     		Square s = cb.getSquare(move);

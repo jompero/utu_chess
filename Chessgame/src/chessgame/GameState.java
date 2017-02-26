@@ -10,13 +10,13 @@ public class GameState implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    public void setPlayer(String name, int player) {
-    	players[player] = name;
-    }
-    
     public void logTurn(int round, Square from, Square to) {
     	moveHistory.add(round * 2, from.getPoint());
     	moveHistory.add(round * 2 + 1, to.getPoint());
+    }
+    
+    public void setPlayer(String name, int player) {
+    	players[player] = name;
     }
     
     public String[] getPlayers() {
