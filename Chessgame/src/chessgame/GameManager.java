@@ -51,8 +51,7 @@ public class GameManager {
     	
     	setRound(++round);
     }
-    
-    
+
     // Check and mate
     private boolean check(int player) {
     	Square king = cb.getKing(player);
@@ -68,15 +67,25 @@ public class GameManager {
     
     private boolean checkmate(int player) {
     	Piece king = cb.getKing(player).getPiece();
-    	
+    	ArrayList<Square> pieces = cb.getPlayerPieces(player);
+    	GameState cachedState = new GameState(state);
     	
     	Piece p;
     	ArrayList<Point> moves;
     	
-    	// Get piece from player
-    	// Iterate pieces and their moves
-    	// Run check for each move
-    	
+    	for (Square s : pieces) {
+    		moves = s.getPiece().getMoves(s.getPoint());
+    		for (Point move : moves) {
+    			movePiece(s, cb.getSquare(move));
+    			if (!check(player)) {
+    				state = new GameState(cachedState);
+    				loadGame(state);
+    				return false;
+    			}
+				state = new GameState(cachedState);
+				loadGame(state);
+    		}
+    	}
     	return true;
     }
     
@@ -111,8 +120,7 @@ public class GameManager {
      */
     public void clickQueue(Square s) {
     	if (this.s != null) {										// If a square has already been selected
-    		if(isValidMove(s)) {									// If the square is in within valid moves
-    			movePiece(this.s, s);								// Move piece and proceed with game logic
+    		if(isValidMove(s)) {									// If the square is in within valid moves, move it and proceed with game logic
     			nextRound();
     			return;
     		}
@@ -160,6 +168,13 @@ public class GameManager {
     	
     	for (Point move : validMoves) {
     		if (move.equals(s.getPoint())) {
+    			GameState cachedState = new GameState(state);
+    			movePiece(this.s, s);
+    			if(check(getTurn())) {
+    				state = cachedState;
+    				loadGame(state);
+    				return false;
+    			}
     			return true;
     		}
     	}
