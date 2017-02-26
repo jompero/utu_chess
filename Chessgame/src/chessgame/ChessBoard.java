@@ -6,7 +6,7 @@ import javafx.scene.layout.GridPane;
 
 public class ChessBoard extends GridPane {
 
-    private static final ArrayList<Square> board = new ArrayList<>(); // Reference to squares on board, call with getBoard from other objects
+    private static final ArrayList<Square> board = new ArrayList<>();
     
     private static ChessBoard instance;
     
@@ -17,6 +17,19 @@ public class ChessBoard extends GridPane {
         drawBoard();
     }
     
+    // Creates chess board in memory
+    private void createBoard() {
+        for (int file = 0; file < Chess.BOARDSIZE; file++) {
+            for (int rank = 0; rank < Chess.BOARDSIZE; rank++) {
+                board.add(new Square(rank, file));
+            }
+        }
+    }
+    
+    // -------------------------------------------------- //
+    
+    // -------------------- GET AND SET ----------------- //
+    
     /**
      * Only one instance of ChessBoard can be active at a time. It will be instanced by the main class through this method instead of a constructor.
      * @return The Singleton instance of ChessBoard. If one is not active, it will be created.
@@ -26,15 +39,6 @@ public class ChessBoard extends GridPane {
     		return new ChessBoard();
     	}
     	return instance;
-    }
-    
-    // Creates chess board in memory
-    private void createBoard() {
-        for (int file = 0; file < Chess.BOARDSIZE; file++) {
-            for (int rank = 0; rank < Chess.BOARDSIZE; rank++) {
-                board.add(new Square(rank, file));
-            }
-        }
     }
     
     public ArrayList<Square> getBoard() {
@@ -75,6 +79,10 @@ public class ChessBoard extends GridPane {
 		}
 		return null;
 	}
+	
+    // -------------------------------------------------- //
+    
+    // --------------------- OVERRIDES ------------------ //
     
     /**
      * @param point Point on board

@@ -37,7 +37,7 @@ public class GameManager {
 
     // ------------------ TURN HANDLING ----------------- //
     private void nextRound() {
-    	if (isCheck(getTurn())) {
+    	if (check(getTurn())) {
     		ArrayList<Point> moveHistory = state.getMoveHistory();
     		moveHistory.remove(moveHistory.size() - 1);
     		moveHistory.remove(moveHistory.size() - 1);
@@ -49,42 +49,34 @@ public class GameManager {
     	s = null;
     	validMoves.clear();
     	
-    	checkWinCondition();
-    	
     	setRound(++round);
     }
     
     
     // Check and mate
-    private boolean isCheck(int player) {
+    private boolean check(int player) {
     	Square king = cb.getKing(player);
     	Point p = king.getPoint();
     	
     	for (Point move : playerMoves(1 - player)) {
     		if (move.equals(p)) {
-    			System.out.println("isCheck");
     			return true;
     		}
     	}
-    	System.out.println("isNotCheck");
     	return false;
     }
     
-    private boolean checkWinCondition() {
+    private boolean checkmate(int player) {
+    	Piece king = cb.getKing(player).getPiece();
+    	
+    	
     	Piece p;
+    	ArrayList<Point> moves;
     	
-    	ArrayList<Point> moveThis = playerMoves(getTurn());
-    	ArrayList<Point> movesNext = playerMoves(1 - getTurn());
+    	// Get piece from player
+    	// Iterate pieces and their moves
+    	// Run check for each move
     	
-    	for (Square s : board) {
-    		p = s.getPiece();
-    		if (p != null) {
-    			if (p instanceof King && p.getPlayer() != getTurn()) {
-    				ArrayList<Point> movesKing = p.getMoves(s.getPoint());
-    				
-    			}
-    		}
-    	}
     	return true;
     }
     
