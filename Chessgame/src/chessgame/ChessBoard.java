@@ -49,6 +49,7 @@ public class ChessBoard extends GridPane {
     
     public void clearBoard() {
         for (Square square : board) {
+        	square.highlight(false);
         	square.clear();
         }
     }
@@ -62,10 +63,23 @@ public class ChessBoard extends GridPane {
     	return null;
     }
     
+	public Square getKing(int player) {
+		Piece p;
+		for (Square s : board) {
+			p = s.getPiece();
+			if (p != null) {
+				if (p instanceof King && p.getPlayer() == player) {
+					return s;
+				}
+			}
+		}
+		return null;
+	}
+    
     /**
      * @param point Point on board
      * @param board Chess board to refer to
-     * @return Returns -1 for empty, 0 for player 1, 1 for player 2
+     * @return Returns -1 for empty, 0 for player 1, 1 for player 2 and -2 for no square
      */
     public int squareState(Point point) {
     	Square s = getSquare(point);
@@ -73,8 +87,9 @@ public class ChessBoard extends GridPane {
 			if (s.getPiece() != null) {
 				return s.getPiece().getPlayer();
 			}
+			return -1;
 		}
-    	return -1;
+    	return -2;
     }
     
     @Override
