@@ -33,17 +33,20 @@ abstract class Piece extends ImageView {
 
 		for (int[] move : moveSet) {
 			for (int i = 0; i < range; i++) {
-				// New point = x + (move[0] * (i + 1)), y + (move[1] * (i + 1)
-				/* Run point through cb.squareState(Point) and if:
-				 * !0 {
-				 * check if same player as gm.getTurn(); {
-				 * Break if true, moves.add(Point) if false
-				 * }}
-				 * else moves.add(Point)
-				*/ 
-				
-				
-				moves.add(new Point(x + (move[0] * (i + 1)), y + (move[1] * (i + 1))));
+				Point  p = new Point(x + (move[0] * (i + 1)), y + (move[1] * (i + 1)));
+				int squareState = cb.squareState(p);
+				if (squareState < -1) {
+					if (gm.getTurn() != squareState) {
+						moves.add(p);
+						break;
+					} else {
+						break;
+					}
+				}
+				else if (squareState != -1) {
+					break;
+				}
+				moves.add(p);
 			}
 		}
 		return moves;
