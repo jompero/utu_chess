@@ -2,11 +2,11 @@ package chessgame;
 
 import javafx.scene.image.Image;
 
+
 public class Rook extends Piece {
+	
     String spriteWhite = "img/rw.png";
     String spriteBlack = "img/rb.png";
-    
-    int[][] moveSet = new int[][]{{0,9},{9,0}};
     
     public Rook(int player) {
         super(player);
