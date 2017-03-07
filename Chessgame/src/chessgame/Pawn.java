@@ -16,6 +16,7 @@ public class Pawn extends Piece {
         sprite = player == 0 ? new Image(spriteWhite) : new Image(spriteBlack);
         drawSprite();
     }
+    
     @Override
     public String toString() {
         return player == 0 ? "P" : "p";

@@ -67,5 +67,4 @@ abstract class Piece extends ImageView {
 	protected void setMoveSet(int[][] moveSet) {
 		this.moveSet = moveSet;
 	}
-	
 }
