@@ -61,6 +61,7 @@ public class Square extends StackPane {
     public void setPiece(Piece piece) {
         clear();
         
+        // Promotion
         if (point.getY() == 0 || point.getY() == 7) {
         	if (piece instanceof Pawn) {
         		int player = piece.getPlayer();
