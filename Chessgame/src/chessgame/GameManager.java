@@ -45,10 +45,10 @@ public class GameManager {
     	
     	System.out.println(checkmate(getTurn()));
     	
-    	if (checkmate(getTurn())) {
+    	/*if (checkmate(getTurn())) {
     		UtilityBar.updateConsole("Checkmate! " + state.getPlayer(1 - getTurn()) + "wins.");
     		winConditionMet = true;
-    	}
+    	}*/
     }
 
     // Check and mate
@@ -128,20 +128,39 @@ public class GameManager {
             		if (this.s != null) {
             			highlightMoves(false);
             			this.s.select(false);							// Unselect previous selection
-            			
             		}
         			this.s = s;											// Select new selection
         			validMoves = s.getPiece().getMoves(s.getPoint());
                 	s.select(true);
                 	highlightMoves(true);
                 	if (s.getPiece() != null) {
-                		validMoves = s.getPiece().getMoves(s.getPoint());
+                		calculateMoves(s);
                 	} else {
                 		validMoves.clear();
                 	}
         		}
         	}
     	}
+    }
+    
+    // Get moves from piece and remove illegal moves
+    private void calculateMoves(Square s) {
+    	validMoves = s.getPiece().getMoves(s.getPoint());
+    	/*
+    	GameState cachedState = new GameState(state);
+    	
+		for (Point move : validMoves) {
+			movePiece(s, cb.getSquare(move));
+			if (check(getTurn())) {
+				state = new GameState(cachedState);
+				loadGame(state);
+			} else {
+				validMoves.remove(move);
+				state = new GameState(cachedState);
+				loadGame(state);
+			}
+		}
+		*/
     }
     
     // Enable javaFX stroke on validMoves
@@ -156,15 +175,6 @@ public class GameManager {
     
     // Verify if move is within validMoves
     private boolean isValidMove(Square s) {
-    	
-    	//////DELETE WHEN GETMOVES LOGIC IS DONE//////
-    	if (s.getPiece() != null) {
-    		if (s.getPiece().getPlayer() == getTurn()) {
-    			return false;
-    		}
-    	}
-    	//////////////////////////////////////////////
-    	
     	for (Point move : validMoves) {
     		if (move.equals(s.getPoint())) {
     			GameState cachedState = new GameState(state);
