@@ -9,13 +9,13 @@ import javafx.scene.layout.StackPane;
 public class Square extends StackPane {
 	// Point data and visuals
     private Point point;
-    private Check check;
+    private SquareRect check;
     // Contains a possible
     private Piece piece;
       
     public Square(int x, int y) {
         this.point = new Point(x, y);
-        check = new Check(point);
+        check = new SquareRect(point);
         this.getChildren().add(check);
         
         onClick();

@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
-class Check extends Rectangle {
+class SquareRect extends Rectangle {
     final Color paint;
     final Color dark = Color.DARKGRAY;
     final Color light = Color.LIGHTGRAY;
@@ -17,7 +17,7 @@ class Check extends Rectangle {
     InnerShadow noShadow = new InnerShadow(0, 0, 0, Color.BLACK);
     
     
-    public Check(Point p) {
+    public SquareRect(Point p) {
         super(Chess.SQUARESIZE, Chess.SQUARESIZE);
         
         paint = ((p.getX() + p.getY()) % 2) == 0 ? dark : light;
