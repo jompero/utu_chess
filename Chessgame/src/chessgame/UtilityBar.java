@@ -25,7 +25,6 @@ public class UtilityBar extends ToolBar {
 	
 	public UtilityBar() {
 		setMinHeight(40);
-		setMaxHeight(40);
 		
 		// Create a pane to align content to the right
 		Pane alignRight = new Pane();
