@@ -23,6 +23,8 @@ public class Chess {
     * @return  the Portable Game Notation of given move
     */
     public static String printPGN(int round, Square from, Square to) {
-    	return round + ".[" + from.toString() + " " + to.toString() + "]";
+    	if (from != null && to != null)
+    		return round + ".[" + from.toString() + " " + to.toString() + "]";
+    	return null;
     }
 }

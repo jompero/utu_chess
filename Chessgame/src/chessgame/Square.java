@@ -9,14 +9,14 @@ import javafx.scene.layout.StackPane;
 public class Square extends StackPane {
 	// Point data and visuals
     private Point point;
-    private SquareRect check;
+    private SquareRect rect;
     // Contains a possible
     private Piece piece;
       
     public Square(int x, int y) {
         this.point = new Point(x, y);
-        check = new SquareRect(point);
-        this.getChildren().add(check);
+        rect = new SquareRect(point);
+        this.getChildren().add(rect);
         
         onClick();
     }
@@ -41,11 +41,11 @@ public class Square extends StackPane {
     
     // ----------------- JAVAFX EFFECTS ----------------- //
     public void highlight(boolean toggle) {
-    	check.highlightFX(toggle);
+    	rect.highlightFX(toggle);
     }
     
     public void select(boolean toggle) {
-    	check.selectFX(toggle);
+    	rect.selectFX(toggle);
     }
     // -------------------------------------------------- //
     

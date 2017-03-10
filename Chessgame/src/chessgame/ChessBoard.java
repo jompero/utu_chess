@@ -81,6 +81,20 @@ public class ChessBoard extends GridPane {
 		return null;
 	}
 	
+	public ArrayList<Square> getPlayerPieces(int player) {
+		ArrayList<Square> pieces = new ArrayList<>();
+		Piece p;
+		for (Square s : board) {
+			p = s.getPiece();
+			if (p != null) {
+				if (p.getPlayer() == player) {
+					pieces.add(s);
+				}
+			}
+		}
+		return pieces;
+	}
+	
     // -------------------------------------------------- //
     
     // --------------------- OVERRIDES ------------------ //
