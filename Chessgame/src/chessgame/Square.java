@@ -9,13 +9,13 @@ import javafx.scene.layout.StackPane;
 public class Square extends StackPane {
 	// Point data and visuals
     private Point point;
-    private SquareRectangle rect;
+    private SquareRect rect;
     // Contains a possible
     private Piece piece;
       
     public Square(int x, int y) {
         this.point = new Point(x, y);
-        rect = new SquareRectangle(point);
+        rect = new SquareRect(point);
         this.getChildren().add(rect);
         
         onClick();
@@ -60,6 +60,15 @@ public class Square extends StackPane {
     
     public void setPiece(Piece piece) {
         clear();
+        
+        // Promotion
+        if (point.getY() == 0 || point.getY() == 7) {
+        	if (piece instanceof Pawn) {
+        		int player = piece.getPlayer();
+        		piece = new Queen(player);
+        	}
+        }
+        
         this.piece = piece;
         this.getChildren().add(piece);
     }

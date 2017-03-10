@@ -3,6 +3,7 @@ package chessgame;
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 
 public class ChessBoard extends GridPane {
 
@@ -100,14 +101,14 @@ public class ChessBoard extends GridPane {
     
     /**
      * @param point Point on board
-     * @param board Chess board to refer to
      * @return Returns -1 for empty, 0 for player 1, 1 for player 2 and -2 for no square
      */
     public int squareState(Point point) {
     	Square s = getSquare(point);
 		if (s != null) {
-			if (s.getPiece() != null) {
-				return s.getPiece().getPlayer();
+			Piece p = s.getPiece();
+			if (p != null) {
+				return p.getPlayer();
 			}
 			return -1;
 		}

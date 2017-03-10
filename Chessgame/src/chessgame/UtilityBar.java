@@ -24,17 +24,14 @@ public class UtilityBar extends ToolBar {
 	static Label console;
 	
 	public UtilityBar() {
+		setMinHeight(40);
+		
 		// Create a pane to align content to the right
 		Pane alignRight = new Pane();
 		HBox.setHgrow(alignRight, Priority.ALWAYS);
 		
 		// Console to display relevant text
 		console = new Label();
-		
-		//ObservableList<Button> buttons;
-		//buttons.add(new NewGameButton());
-		//buttons.add(new LoadButton());
-		//buttons.add(new SaveButton());
 		
 		MenuButton menuButton = new MenuButton("Game");
 		menuButton.getItems().addAll(new NewGameButton(), new SaveButton(), new LoadButton());

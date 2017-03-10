@@ -54,14 +54,17 @@ public class GameManager {
     // Check and mate
     private boolean check(int player) {
     	Square king = cb.getKing(player);
-    	Point p = king.getPoint();
-    	
-    	for (Point move : playerMoves(1 - player)) {
-    		if (move.equals(p)) {
-    			return true;
-    		}
+    	if (king != null) {
+        	Point p = king.getPoint();
+        	
+        	for (Point move : playerMoves(1 - player)) {
+        		if (move.equals(p)) {
+        			return true;
+        		}
+        	}
+        	return false;
     	}
-    	return false;
+    	return true;
     }
     
     private boolean checkmate(int player) {

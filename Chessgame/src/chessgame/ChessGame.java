@@ -3,7 +3,10 @@ package chessgame;
 import java.io.File;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -22,17 +25,25 @@ public class ChessGame extends Application {
     		dir.mkdir();
     	}
     	
+        // ------------------- SCENE SETUP ------------------- //
+    	
     	primaryStage.setTitle("Shakkipeli");
         
         VBox scene = new VBox();
         cb = ChessBoard.getInstance();
         UtilityBar ub = new UtilityBar();
         
-        scene.getChildren().add(ub);
-        scene.getChildren().add(cb);
+        StackPane boardPane = new StackPane(cb);
+        boardPane.setAlignment(Pos.CENTER);
         
-        primaryStage.setScene(new Scene(scene, 550, 585));
+        scene.getChildren().add(ub);
+        scene.getChildren().add(boardPane);
+        
+        // -------------------------------------------------- //
+        
+        primaryStage.setScene(new Scene(scene, Chess.SQUARESIZE * Chess.BOARDSIZE, ub.getMinHeight() + Chess.SQUARESIZE * Chess.BOARDSIZE));
         primaryStage.setResizable(false);
+        primaryStage.sizeToScene();
         primaryStage.show();
     }
 }
