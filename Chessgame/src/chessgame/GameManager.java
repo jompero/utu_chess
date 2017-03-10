@@ -24,6 +24,7 @@ public class GameManager {
 	static int game = 0;
 	ChessBoard cb = ChessBoard.getInstance();
 	ArrayList<Square> board = cb.getBoard();
+	boolean winConditionMet = false;
 	
 	// Singleton instance of GameManager
     static GameManager instance;
@@ -35,21 +36,19 @@ public class GameManager {
     	return instance;
     }
 
-    // ------------------ TURN HANDLING ----------------- //
+    // ------------------ ROUND LOGIC ----------------- //
     private void nextRound() {
-    	if (check(getTurn())) {
-    		ArrayList<Point> moveHistory = state.getMoveHistory();
-    		moveHistory.remove(moveHistory.size() - 1);
-    		moveHistory.remove(moveHistory.size() - 1);
-    		loadGame(state);
-    		UtilityBar.updateConsole("Cannot move to check. Turn: " + state.getPlayer(getTurn()));
-    		return;
-    	}
-    	
     	s = null;
     	validMoves.clear();
     	
     	setRound(++round);
+    	
+    	System.out.println(checkmate(getTurn()));
+    	
+    	if (checkmate(getTurn())) {
+    		UtilityBar.updateConsole("Checkmate! " + state.getPlayer(1 - getTurn()) + "wins.");
+    		winConditionMet = true;
+    	}
     }
 
     // Check and mate
@@ -66,11 +65,9 @@ public class GameManager {
     }
     
     private boolean checkmate(int player) {
-    	Piece king = cb.getKing(player).getPiece();
     	ArrayList<Square> pieces = cb.getPlayerPieces(player);
     	GameState cachedState = new GameState(state);
     	
-    	Piece p;
     	ArrayList<Point> moves;
     	
     	for (Square s : pieces) {
@@ -119,29 +116,31 @@ public class GameManager {
      * @param s New square selection
      */
     public void clickQueue(Square s) {
-    	if (this.s != null) {										// If a square has already been selected
-    		if(isValidMove(s)) {									// If the square is in within valid moves, move it and proceed with game logic
-    			nextRound();
-    			return;
-    		}
-    	}
-    	if (s.getPiece() != null) {									// Select the square if there is a piece		
-    		if (s.getPiece().getPlayer() == getTurn()) {			// And the piece belongs to the player
-        		if (this.s != null) {
-        			highlightMoves(false);
-        			this.s.select(false);							// Unselect previous selection
-        			
+    	if (!winConditionMet) {
+        	if (this.s != null) {										// If a square has already been selected
+        		if(isValidMove(s)) {									// If the square is in within valid moves, move it and proceed with game logic
+        			nextRound();
+        			return;
         		}
-    			this.s = s;											// Select new selection
-    			validMoves = s.getPiece().getMoves(s.getPoint());
-            	s.select(true);
-            	highlightMoves(true);
-            	if (s.getPiece() != null) {
-            		validMoves = s.getPiece().getMoves(s.getPoint());
-            	} else {
-            		validMoves.clear();
-            	}
-    		}
+        	}
+        	if (s.getPiece() != null) {									// Select the square if there is a piece		
+        		if (s.getPiece().getPlayer() == getTurn()) {			// And the piece belongs to the player
+            		if (this.s != null) {
+            			highlightMoves(false);
+            			this.s.select(false);							// Unselect previous selection
+            			
+            		}
+        			this.s = s;											// Select new selection
+        			validMoves = s.getPiece().getMoves(s.getPoint());
+                	s.select(true);
+                	highlightMoves(true);
+                	if (s.getPiece() != null) {
+                		validMoves = s.getPiece().getMoves(s.getPoint());
+                	} else {
+                		validMoves.clear();
+                	}
+        		}
+        	}
     	}
     }
     
@@ -173,6 +172,7 @@ public class GameManager {
     			if(check(getTurn())) {
     				state = cachedState;
     				loadGame(state);
+    				UtilityBar.updateConsole("Cannot move to check. Turn: " + state.getPlayer(getTurn()));
     				return false;
     			}
     			return true;
