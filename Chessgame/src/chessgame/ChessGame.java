@@ -31,7 +31,7 @@ public class ChessGame extends Application {
         scene.getChildren().add(ub);
         scene.getChildren().add(cb);
         
-        primaryStage.setScene(new Scene(scene, 550, 585));
+        primaryStage.setScene(new Scene(scene, Chess.SQUARESIZE * Chess.BOARDSIZE, Chess.SQUARESIZE * Chess.BOARDSIZE + ub.getMinHeight()));
         primaryStage.setResizable(false);
         primaryStage.show();
     }

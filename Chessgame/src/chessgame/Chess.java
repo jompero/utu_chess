@@ -1,7 +1,6 @@
 package chessgame;
 
 import java.awt.Point;
-import java.util.ArrayList;
 
 public class Chess {
     public static final int BOARDSIZE = 8;

@@ -24,6 +24,8 @@ public class UtilityBar extends ToolBar {
 	static Label console;
 	
 	public UtilityBar() {
+		setMinHeight(40);
+		
 		// Create a pane to align content to the right
 		Pane alignRight = new Pane();
 		HBox.setHgrow(alignRight, Priority.ALWAYS);
