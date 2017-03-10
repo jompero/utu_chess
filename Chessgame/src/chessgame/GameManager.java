@@ -152,15 +152,6 @@ public class GameManager {
     
     // Verify if move is within validMoves
     private boolean isValidMove(Square s) {
-    	
-    	//////DELETE WHEN GETMOVES LOGIC IS DONE//////
-    	if (s.getPiece() != null) {
-    		if (s.getPiece().getPlayer() == getTurn()) {
-    			return false;
-    		}
-    	}
-    	//////////////////////////////////////////////
-    	
     	for (Point move : validMoves) {
     		if (move.equals(s.getPoint())) {
     			return true;
