@@ -43,7 +43,9 @@ public class GameManager {
     	cachedState = new GameState(currentState);
     	
     	s = null;
-    	validMoves.clear();
+    	if (validMoves != null) {
+        	validMoves.clear();
+    	}
     	
     	setRound(++round);
 
@@ -230,7 +232,6 @@ public class GameManager {
         		Square from = cb.getSquare(state.moveHistory.get(i));
         		Square to = cb.getSquare(state.moveHistory.get(i + 1));
         		movePiece(from, to);
-        		round++;
         	}
         	this.currentState = state;
         	setRound(round);
@@ -240,11 +241,6 @@ public class GameManager {
     		defaultStart();
     		npe.printStackTrace();
     		return;
-    	}
-    	
-    	// Check if game is already finished
-    	if (checkmate(getTurn())) {
-    		UtilityBar.updateConsole("Checkmate! " + currentState.getPlayer(1 - getTurn()) + " won this game.");
     	}
     }
     
