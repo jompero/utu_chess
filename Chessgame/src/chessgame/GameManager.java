@@ -232,6 +232,7 @@ public class GameManager {
         		Square from = cb.getSquare(state.moveHistory.get(i));
         		Square to = cb.getSquare(state.moveHistory.get(i + 1));
         		movePiece(from, to);
+        		round++;
         	}
         	this.currentState = state;
         	setRound(round);
