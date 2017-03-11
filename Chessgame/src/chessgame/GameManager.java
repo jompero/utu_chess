@@ -15,19 +15,21 @@ import javafx.scene.control.TextInputDialog;
 public class GameManager {
 	
 	// Cached data from selected square
-    Square s;						// Square selection
-    ArrayList<Point> validMoves;	// Valid moves for piece in the selected square
+	private Square s;						// Square selection
+	private ArrayList<Point> validMoves;	// Valid moves for piece in the selected square
     
     // Game data
-    GameState state;
-	int round = 0;
-	static int game = 0;
-	ChessBoard cb = ChessBoard.getInstance();
-	ArrayList<Square> board = cb.getBoard();
-	boolean winConditionMet = false;
+    private GameState cachedState;			// Keeps the longest state
+    private GameState currentState;			// Currently displayed state
+
+    private int round = 0;
+    private static int game = 0;
+    private ChessBoard cb = ChessBoard.getInstance();
+    private ArrayList<Square> board = cb.getBoard();
+    private boolean winConditionMet = false;
 	
 	// Singleton instance of GameManager
-    static GameManager instance;
+    private static GameManager instance;
     
     public static GameManager getInstance() {
     	if (instance == null) {
@@ -38,12 +40,12 @@ public class GameManager {
 
     // ------------------ ROUND LOGIC ----------------- //
     private void nextRound() {
+    	cachedState = new GameState(currentState);
+    	
     	s = null;
     	validMoves.clear();
     	
     	setRound(++round);
-    	
-    	System.out.println(checkmate(getTurn()));
     	
     	/*if (checkmate(getTurn())) {
     		UtilityBar.updateConsole("Checkmate! " + state.getPlayer(1 - getTurn()) + "wins.");
@@ -69,7 +71,7 @@ public class GameManager {
     
     private boolean checkmate(int player) {
     	ArrayList<Square> pieces = cb.getPlayerPieces(player);
-    	GameState cachedState = new GameState(state);
+    	GameState cachedState = new GameState(currentState);
     	
     	ArrayList<Point> moves;
     	
@@ -78,12 +80,12 @@ public class GameManager {
     		for (Point move : moves) {
     			movePiece(s, cb.getSquare(move));
     			if (!check(player)) {
-    				state = new GameState(cachedState);
-    				loadGame(state);
+    				currentState = new GameState(cachedState);
+    				loadGame(currentState);
     				return false;
     			}
-				state = new GameState(cachedState);
-				loadGame(state);
+				currentState = new GameState(cachedState);
+				loadGame(currentState);
     		}
     	}
     	return true;
@@ -114,6 +116,7 @@ public class GameManager {
     // -------------------------------------------------- //
     
     // ------------------ PIECE MOVEMENT ---------------- //
+    
     /** Places a square with a piece in queue or moves the piece from previously selected square to newly selected if a valid move
      * 
      * @param s New square selection
@@ -133,14 +136,9 @@ public class GameManager {
             			this.s.select(false);							// Unselect previous selection
             		}
         			this.s = s;											// Select new selection
-        			validMoves = s.getPiece().getMoves(s.getPoint());
+        			calculateMoves(s);
                 	s.select(true);
                 	highlightMoves(true);
-                	if (s.getPiece() != null) {
-                		calculateMoves(s);
-                	} else {
-                		validMoves.clear();
-                	}
         		}
         	}
     	}
@@ -148,31 +146,41 @@ public class GameManager {
     
     // Get moves from piece and remove illegal moves
     private void calculateMoves(Square s) {
+    	// Get moves
     	validMoves = s.getPiece().getMoves(s.getPoint());
-    	/*
-    	GameState cachedState = new GameState(state);
+    	ArrayList<Point> illegalMoves = new ArrayList<>();
     	
+    	// Remove illegal moves
 		for (Point move : validMoves) {
 			movePiece(s, cb.getSquare(move));
-			if (check(getTurn())) {
-				state = new GameState(cachedState);
-				loadGame(state);
+			if (!check(getTurn())) {
+				undo(getRound());
+				loadGame(currentState);
+				this.s = s;
 			} else {
-				validMoves.remove(move);
-				state = new GameState(cachedState);
-				loadGame(state);
+				illegalMoves.add(move);
+				undo(getRound());
+				loadGame(currentState);
+				this.s = s;
 			}
 		}
-		*/
+		
+		for (Point illegalMove : illegalMoves) {
+			if (validMoves.remove(illegalMove)) {
+				System.out.println("Removed illegal move: " + illegalMove.toString());
+			}
+		}
     }
     
     // Enable javaFX stroke on validMoves
     private void highlightMoves(boolean isOn) {
-    	for (Point move : validMoves) {
-    		Square s = cb.getSquare(move);
-    		if (s != null) {
-    			s.highlight(isOn);
-    		}
+    	if (validMoves != null) {
+        	for (Point move : validMoves) {
+        		Square s = cb.getSquare(move);
+        		if (s != null) {
+        			s.highlight(isOn);
+        		}
+        	}
     	}
     }
     
@@ -180,14 +188,7 @@ public class GameManager {
     private boolean isValidMove(Square s) {
     	for (Point move : validMoves) {
     		if (move.equals(s.getPoint())) {
-    			GameState cachedState = new GameState(state);
     			movePiece(this.s, s);
-    			if(check(getTurn())) {
-    				state = cachedState;
-    				loadGame(state);
-    				UtilityBar.updateConsole("Cannot move to check. Turn: " + state.getPlayer(getTurn()));
-    				return false;
-    			}
     			return true;
     		}
     	}
@@ -197,10 +198,15 @@ public class GameManager {
     private void movePiece(Square from, Square to) {
     	System.out.println(Chess.printPGN(round + 1, from, to));
     	to.setPiece(from.getPiece());
-    	state.logTurn(round, from, to);
+    	currentState.logTurn(round, from, to);
     	from.select(false);
     	highlightMoves(false);
     	from.clear();
+    }
+    
+    private void undo(int round) {
+    	currentState = new GameState(currentState, round);
+    	loadGame(currentState);
     }
     // -------------------------------------------------- //
     
@@ -222,7 +228,7 @@ public class GameManager {
         		movePiece(from, to);
         		round++;
         	}
-        	this.state = state;
+        	this.currentState = state;
         	setRound(round);
     	}
     	catch (NullPointerException npe) {
@@ -234,9 +240,9 @@ public class GameManager {
     
     private void renamePlayers() {
     	// Setup player names
-    	for (int i = 0; i < state.getPlayers().length; i++) {
+    	for (int i = 0; i < currentState.getPlayers().length; i++) {
     		// Create new dialog box to change player names with appropriate text
-    		String defaultName = state.getPlayer(i);
+    		String defaultName = currentState.getPlayer(i);
     		TextInputDialog renameDialog = new TextInputDialog(defaultName);
     		renameDialog.setTitle("Rename player");
     		renameDialog.setContentText("Rename " + defaultName + ".\n\nName cannot be longer than 8 characters\nand may only contain word characters.");
@@ -260,11 +266,11 @@ public class GameManager {
     		
     		Optional<String> input = renameDialog.showAndWait();
     		int player = i;
-    		input.ifPresent(name -> state.setPlayer(name, player));
-    		if (state.getPlayer(i).equals("")) {
-    			state.setPlayer(defaultName, i);
+    		input.ifPresent(name -> currentState.setPlayer(name, player));
+    		if (currentState.getPlayer(i).equals("")) {
+    			currentState.setPlayer(defaultName, i);
     		}
-    		System.out.println("[" + state.getPlayer(i) + "]");
+    		System.out.println("[" + currentState.getPlayer(i) + "]");
     	}
     }
     // -------------------------------------------------- //
@@ -277,7 +283,7 @@ public class GameManager {
     	round = 0;
     	RoundCounter.getInstance().refresh(getRound());
     	s = null;
-    	state = new GameState();
+    	currentState = new GameState();
     	
     	// Place pieces
         String backline= "RNBQKBNR"; 
@@ -326,11 +332,11 @@ public class GameManager {
     public void setRound(int round) {
     	this.round = round;
     	RoundCounter.getInstance().refresh(getRound());
-    	UtilityBar.updateConsole("Turn: " + state.getPlayer(getTurn()));
+    	UtilityBar.updateConsole("Turn: " + currentState.getPlayer(getTurn()));
     }
     
     public GameState getState() {
-    	return state;
+    	return currentState;
     }
     // -------------------------------------------------- //
 }
