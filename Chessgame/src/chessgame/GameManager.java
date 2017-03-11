@@ -46,12 +46,11 @@ public class GameManager {
     	validMoves.clear();
     	
     	setRound(++round);
-    	
-    	/* CHECK NOT WORKING PROPERLY YET
-		if (checkmate(getTurn())) {
-    		UtilityBar.updateConsole("Checkmate! " + state.getPlayer(1 - getTurn()) + "wins.");
+
+    	if (checkmate(getTurn())) {
+    		UtilityBar.updateConsole("Checkmate! " + currentState.getPlayer(1 - getTurn()) + "wins.");
     		winConditionMet = true;
-    	}*/
+    	}
     }
 
     // Check and mate
@@ -59,9 +58,7 @@ public class GameManager {
     	Square king = cb.getKing(player);
     	if (king != null) {
         	Point p = king.getPoint();
-        	System.out.println(p.toString());
         	ArrayList<Point> moves = playerMoves(1 - player);
-        	System.out.println(moves.toString());
         	
         	for (Point move : moves) {
         		if (move.equals(p)) {
@@ -76,7 +73,6 @@ public class GameManager {
     
     private boolean checkmate(int player) {
     	ArrayList<Square> pieces = cb.getPlayerPieces(player);
-    	GameState cachedState = new GameState(currentState);
     	
     	ArrayList<Point> moves;
     	
@@ -85,12 +81,10 @@ public class GameManager {
     		for (Point move : moves) {
     			movePiece(s, cb.getSquare(move));
     			if (!check(player)) {
-    				currentState = new GameState(cachedState);
-    				loadGame(currentState);
+    				undo(getRound());
     				return false;
     			}
-				currentState = new GameState(cachedState);
-				loadGame(currentState);
+    			undo(getRound());
     		}
     	}
     	return true;
@@ -103,17 +97,7 @@ public class GameManager {
 	 */
     private ArrayList<Point> playerMoves(int player) {
     	ArrayList<Point> moves = new ArrayList<>();
-    	
-    	for (Square s : board) {
-    		Piece p = s.getPiece();
-    		if (p != null) {
-    			if (p.getPlayer() == player) {
-    				moves.addAll(p.getMoves(s.getPoint()));
-    			}
-    		}
-    	}
-    	
-    	/*
+
     	Set<Point> hs = new HashSet<>();
     	for (Square s : board) {
     		Piece p = s.getPiece();
@@ -123,7 +107,7 @@ public class GameManager {
     			}
     		}
     	}
-    	moves.addAll(hs); */
+    	moves.addAll(hs);
     	
     	return moves;
     }
@@ -172,7 +156,6 @@ public class GameManager {
 				undo(getRound());
 				this.s = s;
 			} else {
-				System.out.println("Illegal move found: " + validMoves.get(i).toString());
 				illegalMoves.add(validMoves.get(i));
 				undo(getRound());
 				this.s = s;
@@ -181,7 +164,6 @@ public class GameManager {
 		
 		for (Point illegalMove : illegalMoves) {
 			if (validMoves.remove(illegalMove)) {
-				System.out.println("Removed illegal move: " + illegalMove.toString());
 			}
 		}
     }
@@ -226,6 +208,7 @@ public class GameManager {
     
     // ------------------- GAME SETUP ------------------- //
     public void newGame() {
+    	winConditionMet = false;
     	defaultStart();
     	renamePlayers();
     	setRound(0);
