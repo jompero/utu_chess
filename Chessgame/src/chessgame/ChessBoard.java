@@ -55,6 +55,7 @@ public class ChessBoard extends GridPane {
     public void clearBoard() {
         for (Square square : board) {
         	square.highlight(false);
+        	square.select(false);
         	square.clear();
         }
     }
