@@ -123,6 +123,7 @@ class LoadButton extends MenuItem {
 			    	GameState data = new Save().LoadData(file);
 			        if (data != null) {
 			        	gm.loadGame(data);
+			        	gm.checkmate(gm.getTurn());
 					} else {
 						UtilityBar.updateConsole("Unable to read data!");
 					}

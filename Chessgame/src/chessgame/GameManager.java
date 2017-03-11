@@ -49,10 +49,7 @@ public class GameManager {
     	
     	setRound(++round);
 
-    	if (checkmate(getTurn())) {
-    		UtilityBar.updateConsole("Checkmate! " + currentState.getPlayer(1 - getTurn()) + " wins.");
-    		winConditionMet = true;
-    	}
+    	checkmate(getTurn());
     }
 
     // Check and mate
@@ -73,7 +70,7 @@ public class GameManager {
     	return true;
     }
     
-    private boolean checkmate(int player) {
+    public void checkmate(int player) {
     	ArrayList<Square> pieces = cb.getPlayerPieces(player);
     	
     	ArrayList<Point> moves;
@@ -84,12 +81,13 @@ public class GameManager {
     			movePiece(s, cb.getSquare(move));
     			if (!check(player)) {
     				undo(getRound());
-    				return false;
+    				return;
     			}
     			undo(getRound());
     		}
     	}
-    	return true;
+		UtilityBar.updateConsole("Checkmate! " + currentState.getPlayer(1 - getTurn()) + " wins.");
+		winConditionMet = true;
     }
     
 	/**
@@ -228,9 +226,10 @@ public class GameManager {
     	
     	// Try to load given state
     	try {
-        	for (int i = 0; i < state.getMoveHistory().size(); i += 2) {
-        		Square from = cb.getSquare(state.moveHistory.get(i));
-        		Square to = cb.getSquare(state.moveHistory.get(i + 1));
+    		ArrayList<Point> mh = state.getMoveHistory();
+        	for (int i = 0; i < mh.size(); i += 2) {
+        		Square from = cb.getSquare(mh.get(i));
+        		Square to = cb.getSquare(mh.get(i + 1));
         		movePiece(from, to);
         		round++;
         	}
