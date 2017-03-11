@@ -4,7 +4,7 @@ import java.awt.Point;
 
 public class Chess {
     public static final int BOARDSIZE = 8;
-    public static int SQUARESIZE = 90;
+    public static int SQUARESIZE = 80;
     
     /**
      *
