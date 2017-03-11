@@ -48,7 +48,7 @@ public class GameManager {
     	setRound(++round);
 
     	if (checkmate(getTurn())) {
-    		UtilityBar.updateConsole("Checkmate! " + currentState.getPlayer(1 - getTurn()) + "wins.");
+    		UtilityBar.updateConsole("Checkmate! " + currentState.getPlayer(1 - getTurn()) + " wins.");
     		winConditionMet = true;
     	}
     }
