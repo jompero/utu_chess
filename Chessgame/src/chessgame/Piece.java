@@ -36,7 +36,7 @@ abstract class Piece extends ImageView {
 				Point  p = new Point(x + (move[0] * (i + 1)), y + (move[1] * (i + 1)));
 				int squareState = cb.squareState(p);
 				if (squareState > -1) {
-					if (gm.getTurn() != squareState) {
+					if (player != squareState) {
 						moves.add(p);
 						break;
 					} else {

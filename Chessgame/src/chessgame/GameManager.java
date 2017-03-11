@@ -47,7 +47,8 @@ public class GameManager {
     	
     	setRound(++round);
     	
-    	/*if (checkmate(getTurn())) {
+    	/* CHECK NOT WORKING PROPERLY YET
+		if (checkmate(getTurn())) {
     		UtilityBar.updateConsole("Checkmate! " + state.getPlayer(1 - getTurn()) + "wins.");
     		winConditionMet = true;
     	}*/
@@ -58,12 +59,16 @@ public class GameManager {
     	Square king = cb.getKing(player);
     	if (king != null) {
         	Point p = king.getPoint();
+        	System.out.println(p.toString());
+        	ArrayList<Point> moves = playerMoves(1 - player);
+        	System.out.println(moves.toString());
         	
-        	for (Point move : playerMoves(1 - player)) {
+        	for (Point move : moves) {
         		if (move.equals(p)) {
         			return true;
         		}
         	}
+        	
         	return false;
     	}
     	return true;
@@ -99,6 +104,16 @@ public class GameManager {
     private ArrayList<Point> playerMoves(int player) {
     	ArrayList<Point> moves = new ArrayList<>();
     	
+    	for (Square s : board) {
+    		Piece p = s.getPiece();
+    		if (p != null) {
+    			if (p.getPlayer() == player) {
+    				moves.addAll(p.getMoves(s.getPoint()));
+    			}
+    		}
+    	}
+    	
+    	/*
     	Set<Point> hs = new HashSet<>();
     	for (Square s : board) {
     		Piece p = s.getPiece();
@@ -108,7 +123,7 @@ public class GameManager {
     			}
     		}
     	}
-    	moves.addAll(hs);
+    	moves.addAll(hs); */
     	
     	return moves;
     }
@@ -150,17 +165,16 @@ public class GameManager {
     	validMoves = s.getPiece().getMoves(s.getPoint());
     	ArrayList<Point> illegalMoves = new ArrayList<>();
     	
-    	// Remove illegal moves
-		for (Point move : validMoves) {
-			movePiece(s, cb.getSquare(move));
+    	// Remove moves that will result in current player's check
+		for (int i = 0; i < validMoves.size(); i++) {
+			movePiece(s, cb.getSquare(validMoves.get(i)));
 			if (!check(getTurn())) {
 				undo(getRound());
-				loadGame(currentState);
 				this.s = s;
 			} else {
-				illegalMoves.add(move);
+				System.out.println("Illegal move found: " + validMoves.get(i).toString());
+				illegalMoves.add(validMoves.get(i));
 				undo(getRound());
-				loadGame(currentState);
 				this.s = s;
 			}
 		}
