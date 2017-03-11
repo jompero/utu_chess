@@ -223,6 +223,8 @@ public class GameManager {
     	defaultStart();
     	System.out.println("[" + state.getPlayer(0) + "]");
     	System.out.println("[" + state.getPlayer(1) + "]");
+    	
+    	// Try to load given state
     	try {
         	for (int i = 0; i < state.getMoveHistory().size(); i += 2) {
         		Square from = cb.getSquare(state.moveHistory.get(i));
@@ -234,9 +236,15 @@ public class GameManager {
         	setRound(round);
     	}
     	catch (NullPointerException npe) {
-    		UtilityBar.updateConsole("Save file corrupted!");
+    		UtilityBar.updateConsole("Save corrupted!");
     		defaultStart();
     		npe.printStackTrace();
+    		return;
+    	}
+    	
+    	// Check if game is already finished
+    	if (checkmate(getTurn())) {
+    		UtilityBar.updateConsole("Checkmate! " + currentState.getPlayer(1 - getTurn()) + " won this game.");
     	}
     }
     
