@@ -37,7 +37,7 @@ public class Pawn extends Piece {
 				Point  p = new Point(x + move[0], y + (move[1]));
 				int squareState = cb.squareState(p);
 				if (squareState > -1) {
-					if (gm.getTurn() != squareState) {
+					if (player != squareState) {
                         moves.add(p);
                     }
 				}
