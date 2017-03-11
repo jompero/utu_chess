@@ -3,7 +3,6 @@ package chessgame;
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 
 public class ChessBoard extends GridPane {
 

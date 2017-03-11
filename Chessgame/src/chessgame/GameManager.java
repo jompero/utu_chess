@@ -204,6 +204,11 @@ public class GameManager {
     	currentState = new GameState(currentState, round);
     	loadGame(currentState);
     }
+    
+    public void redo(int round) {
+    	currentState = new GameState(cachedState, round + 1);
+    	loadGame(currentState);
+    }
     // -------------------------------------------------- //
     
     // ------------------- GAME SETUP ------------------- //
