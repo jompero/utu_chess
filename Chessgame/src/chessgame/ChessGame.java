@@ -26,8 +26,10 @@ public class ChessGame extends Application {
     	
         // ------------------- SCENE SETUP ------------------- //
     	
+    	// Window title
     	primaryStage.setTitle("Shakkipeli");
         
+    	// Create scene
         VBox scene = new VBox();
         cb = ChessBoard.getInstance();
         UtilityBar ub = new UtilityBar();
@@ -40,6 +42,7 @@ public class ChessGame extends Application {
         
         // -------------------------------------------------- //
         
+        // Display window
         primaryStage.setScene(new Scene(scene, Chess.SQUARESIZE * Chess.BOARDSIZE, ub.getMinHeight() + Chess.SQUARESIZE * Chess.BOARDSIZE));
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();

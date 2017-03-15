@@ -13,7 +13,7 @@ public class GameState implements Serializable {
     /** Copy state until round
      * 
      * @param gs GameState top be copied
-     * @param round round <= ges.getMoveHistory.size()
+     * @param round round <= gs.getMoveHistory.size()
      */
     public GameState (GameState gs, int round) {
     	this.players = new String[] {gs.getPlayer(0), gs.getPlayer(1)};
@@ -31,6 +31,7 @@ public class GameState implements Serializable {
     
     public GameState() {}
     
+    // Enter move into moveHistory
     public void logTurn(int round, Square from, Square to) {
     	moveHistory.add(round * 2, from.getPoint());
     	moveHistory.add(round * 2 + 1, to.getPoint());

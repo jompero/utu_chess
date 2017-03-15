@@ -53,6 +53,11 @@ public class GameManager {
     }
 
     // Check and mate
+    /** 
+     * Boolean confirmation for check.
+     * @param player Player to confirm
+     * @return Whether player is in check or not
+     */
     private boolean check(int player) {
     	Square king = cb.getKing(player);
     	if (king != null) {
@@ -70,6 +75,10 @@ public class GameManager {
     	return true;
     }
     
+    /** 
+     * Confirmation for checkmate using check() method. Proceeds with checkmate logic if all player moves leads to check.
+     * @param player
+     */
     public void checkmate(int player) {
     	ArrayList<Square> pieces = cb.getPlayerPieces(player);
     	
@@ -90,8 +99,8 @@ public class GameManager {
 		winConditionMet = true;
     }
     
-	/**
-	 * 
+	/** 
+	 * Returns all of player 1's or 2's moves.
 	 * @param player 0 || 1
 	 * @return ArrayList of all player 0 || 1 moves
 	 */
@@ -116,8 +125,8 @@ public class GameManager {
     
     // ------------------ PIECE MOVEMENT ---------------- //
     
-    /** Places a square with a piece in queue or moves the piece from previously selected square to newly selected if a valid move
-     * 
+    /** 
+     * Places a square with a piece in queue or moves the piece from previously selected square to newly selected if a valid move.
      * @param s New square selection
      */
     public void clickQueue(Square s) {
@@ -191,6 +200,11 @@ public class GameManager {
     	return false;
     }
     
+    /**
+     * 
+     * @param from Square from which to take the piece.
+     * @param to Square on which to place the piece.
+     */
     private void movePiece(Square from, Square to) {
     	System.out.println(Chess.printPGN(round + 1, from, to));
     	to.setPiece(from.getPiece());
@@ -200,11 +214,19 @@ public class GameManager {
     	from.clear();
     }
     
+    /**
+     * Undo until given round.
+     * @param round 
+     */
     private void undo(int round) {
     	currentState = new GameState(currentState, round);
     	loadGame(currentState);
     }
     
+    /**	
+     * Redo moves until given round. (Unused)
+     * @param round
+     */
     public void redo(int round) {
     	currentState = new GameState(cachedState, round + 1);
     	loadGame(currentState);
@@ -212,13 +234,18 @@ public class GameManager {
     // -------------------------------------------------- //
     
     // ------------------- GAME SETUP ------------------- //
+    // Logic for new game
     public void newGame() {
-    	winConditionMet = false;
-    	defaultStart();
-    	renamePlayers();
-    	setRound(0);
+    	winConditionMet = false;	// In case previous game was won
+    	defaultStart();				// Setup pieces
+    	renamePlayers();			// Give player names
+    	setRound(0);				// Start from round 1
     }
     
+    /**
+     * Sets up the Chessboard for given GameState.
+     * @param state
+     */
     public void loadGame(GameState state) {
     	defaultStart();
     	System.out.println("[" + state.getPlayer(0) + "]");
@@ -244,6 +271,9 @@ public class GameManager {
     	}
     }
     
+    /**
+     * Display text input dialogs to retrieve player names. If input is empty, default names will be used.
+     */
     private void renamePlayers() {
     	// Setup player names
     	for (int i = 0; i < currentState.getPlayers().length; i++) {
@@ -251,7 +281,7 @@ public class GameManager {
     		String defaultName = currentState.getPlayer(i);
     		TextInputDialog renameDialog = new TextInputDialog(defaultName);
     		renameDialog.setTitle("Rename player");
-    		renameDialog.setContentText("Rename " + defaultName + ".\n\nName cannot be longer than 8 characters\nand may only contain word characters.");
+    		renameDialog.setContentText("Rename " + defaultName + ".\n\nName cannot be longer than 8 characters\nand may only contain alphanumeric characters.");
     		renameDialog.setHeaderText(null);
     		
     		// Get text field from the text input dialog
@@ -282,6 +312,7 @@ public class GameManager {
     // -------------------------------------------------- //
     
     // ------------------- PIECE SETUP ------------------ //
+    // Set pieces as per Chess regulations.
     private void defaultStart() {
     	// Add 1 to game counter, used by UtilityBar to determine which alert is to be displayed
     	game++;
@@ -309,6 +340,7 @@ public class GameManager {
         }
     }
     
+    // Return new piece based on given character.
     private Piece newPiece(char piece, int player) {
         switch (piece) {
             case 'R':   return new Rook(player);

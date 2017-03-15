@@ -176,6 +176,7 @@ class SaveButton extends MenuItem {
 }
 
 class RoundCounter extends Label {
+	// Displays round number
 	
 	private static RoundCounter controller;
 	

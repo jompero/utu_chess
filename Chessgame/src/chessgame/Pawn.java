@@ -22,28 +22,23 @@ public class Pawn extends Piece {
         drawSprite();
     }
     
+	/**
+	 * Returns all possible moves including moves that causes check.
+	 * @param point Point where the piece is.
+	 * @return All possible moves.
+	 */
     @Override
     public ArrayList<Point> getMoves(Point point) {
 		ArrayList<Point> moves = new ArrayList<>();
 		int x = (int) point.getX();
 		int y = (int) point.getY();
 		
-		// Pawnin aloitus siirto
+		// Test if piece has moved
 		if(y != 6 && y != 1){
 			setRange(1);
 		}
 		
-		for (int[] move : captureMoves) {
-				Point  p = new Point(x + move[0], y + (move[1]));
-				int squareState = cb.squareState(p);
-				if (squareState > -1) {
-					if (player != squareState) {
-                        moves.add(p);
-                    }
-				}
-				
-		}
-		
+		// Move forward until a piece is reached or range reached.
 		for (int[] move : moveSet) {
 			for (int i = 0; i < range; i++) {
 				Point  p = new Point(x + (move[0] * (i + 1)), y + (move[1] * (i + 1)));
@@ -57,6 +52,20 @@ public class Pawn extends Piece {
 				moves.add(p);
 			}
 		}
+		
+		// With same principle, check if an enemy piece can be captured.
+		for (int[] move : captureMoves) {
+				Point  p = new Point(x + move[0], y + (move[1]));
+				int squareState = cb.squareState(p);
+				// If enemy piece -> can capture
+				if (squareState > -1) {
+					if (player != squareState) {
+                        moves.add(p);
+                    }
+				}
+				
+		}
+		
 		return moves;
 	}
     
