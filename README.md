@@ -9,7 +9,7 @@ The assignment tasked us to create a simple chess computer game where the follow
 - Automatic capturing of opposing pieces
 - Saving and loading of game state
 
-Additionaly we have set personal requirements as follows:
+Additionaly we set personal requirements as follows:
 - Win condition
 - Intuitive mouse controls
 
@@ -17,6 +17,6 @@ The assignment has been now completed and returned. However, we are exploring fo
 - Computer AI
 - Special moves: En passant, castling
 
-Authors:
-Dani Jompero
+Authors:<br>
+Dani Jompero, <br>
 Iiro Sipari
